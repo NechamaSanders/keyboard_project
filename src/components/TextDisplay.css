@@ -1,0 +1,26 @@
+.text-display {
+    border: 1px solid #ccc;
+    min-height: 150px;
+    width: 400px;
+    padding: 10px;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    position: relative;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: black;
+    margin-left: 2px;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: bottom;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
