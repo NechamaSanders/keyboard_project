@@ -1,18 +1,3 @@
-// import './App.css'
-// import Keyboard from './Keyboard'
-// function App() {
-//   function handleKeyPress() {
-
-//   }
-//   return (
-//     <>
-//       <Keyboard language="hebrew" onKeyPress={handleKeyPress} />
-//     </>
-//   )
-// }
-
-// export default App
-// App.jsx
 import { useState } from "react";
 import Keyboard from "./Keyboard";
 import TextDisplay from "./TextDisplay";

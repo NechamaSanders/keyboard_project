@@ -1,1 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+html{
+      background-image: url('./assets/pastel.jpg');
+      background-size:100%;
+}
+#root {
+  text-align: center;
+}
+select {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #a8d8dc;
+  background-color: #d4f0f3;
+  color: #064e54;
+  font-weight: 500;
+  margin-bottom: 15px;
+  transition: 0.2s ease;
+}
+
+select:hover {
+  background-color: #c1e9ee;
+}
+
+select:focus {
+  outline: none;
+  border-color: #91cfd6;
+  background-color: #b0e1e7;
+}
