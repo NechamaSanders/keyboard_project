@@ -27,6 +27,8 @@ export default function App() {
         <option value="english">English</option>
         <option value="hebrew">Hebrew</option>
         <option value="emojis">Emojis</option>
+        <option value="numbers">Numbers</option>
+        <option value="symbols">Symbols</option>
       </select>
       <TextDisplay text={text} language={language} />
       <Keyboard language={language} onKeyPress={handleKeyPress} />
