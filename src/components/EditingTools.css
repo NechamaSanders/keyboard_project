@@ -1,0 +1,32 @@
+.editing-tools button {
+  display: inline-block;
+  margin: 4px;
+  padding: 10px 16px;
+  background-color: #d4f0f3; /* pale seafoam כמו המקלדת */
+  border: 1px solid #a8d8dc;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 70, 100, 0.08);
+}
+
+.editing-tools button:hover {
+  background-color: #c1e9ee;
+  transform: translateY(-2px);
+}
+
+.editing-tools button:active {
+  background-color: #b0e1e7;
+  transform: translateY(0);
+}
+
+/* אופציונלי: רווחים בין הכפתורים והאינפוטים */
+.editing-tools input,
+.editing-tools select {
+  margin: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #a8d8dc;
+  font-size: 1rem;
+}
