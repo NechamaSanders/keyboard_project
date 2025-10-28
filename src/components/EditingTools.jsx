@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-export default function EditingTools({ onKeyPress ,language,setLanguage}) {
+export default function EditingTools({ onKeyPress, language, setLanguage }) {
     const deleteText = (type) => {
 
         if (type === "char") {
@@ -10,11 +10,20 @@ export default function EditingTools({ onKeyPress ,language,setLanguage}) {
         }
 
         if (type === "word") {
-
-            onKeyPress((t) => t.trimEnd().replace(/\S+$/, ''));
+            onKeyPress((t) => {
+                if (t.length === 0) return [];
+                let i = t.length - 1;
+                while (i >= 0 && (t[i].text === ' ' || t[i].text === '\n'))
+                    i--;
+                while (i >= 0 && (t[i].text !== ' ' && t[i].text !== '\n'))
+                    i--;
+                return t.slice(0, i + 1);
+            });
             return;
         }
-        else { onKeyPress((t) => '') }
+        else {
+            onKeyPress((t) => [])
+        }
     };
 
     const undo = () => {
@@ -28,17 +37,17 @@ export default function EditingTools({ onKeyPress ,language,setLanguage}) {
             <button onClick={() => { onChange('א', "ב") }}>שינוי</button>
             <button onClick={undo}>ביטול</button>
             <button onClick={() => { onSearch('א') }}>חפש</button>
-<select
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-        style={{ marginBottom: 10 }}
-      >
-        <option value="english">English</option>
-        <option value="hebrew">Hebrew</option>
-        <option value="emojis">Emojis</option>
-        <option value="numbers">Numbers</option>
-        <option value="symbols">Symbols</option>
-      </select>
+            <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                style={{ marginBottom: 10 }}
+            >
+                <option value="english">English</option>
+                <option value="hebrew">Hebrew</option>
+                <option value="emojis">Emojis</option>
+                <option value="numbers">Numbers</option>
+                <option value="symbols">Symbols</option>
+            </select>
         </div>
     );
 
