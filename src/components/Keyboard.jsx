@@ -57,7 +57,6 @@ export default function Keyboard({ language, onKeyPress }) {
             </div>
             <div className="keyboard-bottom">
                 <Key label="Space" onClick={onKeyPress} />
-                <Key label="Backspace" onClick={onKeyPress} />
                 <Key label="Enter" onClick={onKeyPress} />
             </div>
         </div>
