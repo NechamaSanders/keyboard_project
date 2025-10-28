@@ -44,42 +44,54 @@ export default function EditingTools({ onKeyPress, language, setLanguage }) {
 
     return (
         <div className="editing-tools">
-            <button onClick={() => { deleteText("word") }}>מחק מילה</button>
-            <button onClick={() => { deleteText("all") }}>מחק הכל</button>
-            <button onClick={() => { deleteText("char") }}>מחק אות</button>
-            <input
-                type="text"
-                placeholder="החלף מ"
-                value={changeFrom}
-                onChange={(e) => setChangeFrom(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="החלף ל"
-                value={changeTo}
-                onChange={(e) => setChangeTo(e.target.value)}
-            />
-            <button onClick={() => { changeChar() }}>שינוי</button>
-            <button onClick={undo}>ביטול</button>
-            <input
-                type="text"
-                placeholder="הקלידי מילה לחיפוש..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button onClick={onSearch}>חפש</button>
-            <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                style={{ marginBottom: 10 }}
-            >
-                <option value="english">English</option>
-                <option value="hebrew">Hebrew</option>
-                <option value="emojis">Emojis</option>
-                <option value="numbers">Numbers</option>
-                <option value="symbols">Symbols</option>
-            </select>
-        </div>
+  <div className="keyboard-row">
+    <button onClick={() => deleteText("char")}>מחק אות</button>
+    <button onClick={() => deleteText("word")}>מחק מילה</button>
+    <button onClick={() => deleteText("all")}>מחק הכל</button>
+  </div>
+
+  <div className="keyboard-row">
+    <input 
+      type="text" 
+      placeholder="החלף מ" 
+      value={changeFrom} 
+      onChange={(e) => setChangeFrom(e.target.value)}
+    />
+    <input 
+      type="text" 
+      placeholder="החלף ל" 
+      value={changeTo} 
+      onChange={(e) => setChangeTo(e.target.value)}
+    />
+    <button onClick={changeChar}>שינוי</button>
+  </div>
+
+  <div className="keyboard-row">
+    <input
+      type="text"
+      placeholder="הקלידי מילה לחיפוש..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+    <button onClick={onSearch}>חפש</button>
+  </div>
+
+  <div className="keyboard-row">
+    <button onClick={undo}>ביטול</button>
+    <select
+      value={language}
+      onChange={(e) => setLanguage(e.target.value)}
+      style={{ marginBottom: 10 }}
+    >
+      <option value="english">English</option>
+      <option value="hebrew">Hebrew</option>
+      <option value="emojis">Emojis</option>
+      <option value="numbers">Numbers</option>
+      <option value="symbols">Symbols</option>
+    </select>
+  </div>
+</div>
+
     );
 
 
