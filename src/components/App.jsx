@@ -22,9 +22,6 @@ function handleTextChange(callback) {
    }
   return (
     <div style={{ padding: 20 }}>
-<<<<<<< HEAD
-     
-=======
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value)}
@@ -36,7 +33,6 @@ function handleTextChange(callback) {
         <option value="numbers">Numbers</option>
         <option value="symbols">Symbols</option>
       </select>
->>>>>>> b0d6cb83ff9d786420ee6bf0b1b080e8905dcaeb
       <TextDisplay text={text} language={language} />
       <Keyboard language={language} onKeyPress={handleKeyPress}/>
       <EditingTools onKeyPress={handleTextChange} language={language} setLanguage={setLanguage}/>  
