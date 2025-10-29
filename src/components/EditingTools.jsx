@@ -37,17 +37,57 @@ export default function EditingTools({ onKeyPress, language, setLanguage }) {
     const undo = () => {
 
     }
+
     const onSearch = () => {
         onKeyPress((t) => {
-            const index = t.indexOf(searchTerm);
-            if (index >= 0) alert(`נמצא במיקום ${index + 1}`);
-            else alert("לא נמצא 😕");
-            return t;
+            if (!searchTerm.trim())
+                return t.map(c => ({
+                    ...c,
+                    style: { ...c.style, backgroundColor: "transparent" }
+                }));
+            const fullText = t.map(c => c.text).join("");
+
+            // find all matches (their start indices)
+            const matches = [];
+            let index = fullText.indexOf(searchTerm);
+            while (index !== -1) {
+                matches.push(index);
+                index = fullText.indexOf(searchTerm, index + 1);
+            }
+            if (matches.length === 0) {
+                alert("לא נמצא 😕");
+                return t.map(c => ({
+                    ...c,
+                    style: { ...c.style, backgroundColor: "transparent" }
+                }));
+            }
+
+            let currentPosition = 0;
+            const highlighted = t.map(c => {
+                const inMatch = matches.some(start =>
+                    currentPosition >= start && currentPosition < start + searchTerm.length
+                );
+                const newStyle = {
+                    ...c.style,
+                    backgroundColor: inMatch ? "#83c3c3ff" : "transparent"
+                };
+                currentPosition += 1;
+                return { ...c, style: newStyle };
+            });
+
+            return highlighted;
         });
-    }
+
+    };
+
     const changeChar = () => {
         onKeyPress((t) => {
-            return t.split(changeFrom).join(changeTo);
+            return t.map(c => {
+                if (c.text === changeFrom) {
+                    return { ...c, text: changeTo };
+                }
+                return c;
+            });
         });
     }
 
