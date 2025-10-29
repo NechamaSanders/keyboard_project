@@ -1,24 +1,4 @@
-// export default function DesignTools(color, setColor) {
-//     return <div>
-//         <select
-//             value={color}
-//             onChange={(e) => setColor(e.target.value)}
-//             style={{ marginBottom: 10 }}
-//         > < option value="red">Red</option>
-//             <option value="orange">Orange</option>
-//             <option value="yellow">Yellow</option>
-//             <option value="green">Green</option>
-//             <option value="blue">Blue</option>
-//             <option value="purple">Purple</option>
-//             <option value="pink">Pink</option>
-//             <option value="black">Black</option>
-//             <option value="brown">Brown</option>
-//             <option value="gray">Gray</option>
-//         </select>
-//     </div >
-// }
-// EditingTools.jsx
-export default function DesignTools({ style, setStyle, setText }) {
+export default function DesignTools({ style, setStyle, updateText }) {
     function changeColor(color) {
         setStyle((prev) => ({ ...prev, color }));
     }
@@ -44,7 +24,7 @@ export default function DesignTools({ style, setStyle, setText }) {
         }));
     }
     function applyToAll() {
-        setText(prev => prev.map(c => ({ ...c, style: style  })));
+        updateText(prev => prev.map(c => ({ ...c, style: style  })));
     }
     return (
         <div className="editing-tools">

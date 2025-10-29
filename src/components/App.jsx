@@ -15,25 +15,38 @@ export default function App() {
     fontStyle: "normal",
     fontSize: "16px",
   });
-
+  const [history, setHistory] = useState([]);
+  const updateText = (updater) => {
+    setHistory((h) => [...h, text]);
+    setText(updater);
+  };
+  const undo = () => {
+    setHistory((h) => {
+      if (h.length === 0) return h;
+      const last = h[h.length - 1];
+      setText(last);
+      return h.slice(0, -1); 
+    });
+  };
   function handleKeyPress(key) {
     if (key === "Enter") {
-      setText((t) => [...t, { text: "\n", style: style }]);
+      updateText((t) => [...t, { text: "\n", style: style }]);
     } else if (key === "Space") {
-      setText((t) => [...t, { text: " ", style: style }]);
+      updateText((t) => [...t, { text: " ", style: style }]);
     } else {
-      setText((t) => [...t, { text: key, style: style }]);
+      updateText((t) => [...t, { text: key, style: style }]);
     }
   }
   function handleTextChange(callback) {
-    setText((prev) => callback(prev))
+    updateText((prev) => callback(prev))
   }
   return (
     <div style={{ padding: 20 }}>
       <TextDisplay text={text} language={language} style={style} />
       <Keyboard language={language} onKeyPress={handleKeyPress} />
       <EditingTools onKeyPress={handleTextChange} language={language} setLanguage={setLanguage} />
-      <DesignTools style={style} setStyle={setStyle} setText={setText}/>
+      <DesignTools style={style} setStyle={setStyle} updateText={updateText} />
+      <button onClick={undo}>Undo</button>
     </div>
   );
 }
