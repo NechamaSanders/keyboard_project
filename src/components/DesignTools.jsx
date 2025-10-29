@@ -1,4 +1,4 @@
-export default function DesignTools({ style, setStyle, updateText }) {
+export default function DesignTools({ style, setStyle, text, setTextWithHistory }) {
     function changeColor(color) {
         setStyle((prev) => ({ ...prev, color }));
     }
@@ -6,6 +6,7 @@ export default function DesignTools({ style, setStyle, updateText }) {
     function changeFont(fontFamily) {
         setStyle((prev) => ({ ...prev, fontFamily }));
     }
+    
     function changeSize(fontSize) {
         setStyle((prev) => ({ ...prev, fontSize }));
     }
@@ -23,9 +24,11 @@ export default function DesignTools({ style, setStyle, updateText }) {
             fontStyle: prev.fontStyle === "italic" ? "normal" : "italic",
         }));
     }
+    
     function applyToAll() {
-        updateText(prev => prev.map(c => ({ ...c, style: style  })));
+        setTextWithHistory(text.map(c => ({ ...c, style: style })));
     }
+    
     return (
         <div className="editing-tools">
             <select onChange={(e) => changeFont(e.target.value)} value={style.fontFamily}>
@@ -39,7 +42,8 @@ export default function DesignTools({ style, setStyle, updateText }) {
                 value={style.color}
                 onChange={(e) => changeColor(e.target.value)}
                 style={{ marginBottom: 10 }}
-            > < option value="red">Red</option>
+            >
+                <option value="red">Red</option>
                 <option value="orange">Orange</option>
                 <option value="yellow">Yellow</option>
                 <option value="green">Green</option>
@@ -54,7 +58,8 @@ export default function DesignTools({ style, setStyle, updateText }) {
                 value={style.fontSize}
                 onChange={(e) => changeSize(e.target.value)}
                 style={{ marginBottom: 10 }}
-            > < option value="10px">10</option>
+            >
+                <option value="10px">10</option>
                 <option value="11px">11</option>
                 <option value="12px">12</option>
                 <option value="14px">14</option>
@@ -67,7 +72,6 @@ export default function DesignTools({ style, setStyle, updateText }) {
             </select>
             <button onClick={toggleBold}><b>B</b></button>
             <button onClick={toggleItalic}><i>I</i></button>
-
         </div>
     );
 }

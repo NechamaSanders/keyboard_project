@@ -4,9 +4,10 @@ import TextDisplay from "./TextDisplay";
 import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
 
-
 export default function App() {
   const [text, setText] = useState([]);
+  const [history, setHistory] = useState([[]]);
+  const [historyIndex, setHistoryIndex] = useState(0);
   const [language, setLanguage] = useState("english");
   const [style, setStyle] = useState({
     color: "black",
@@ -15,38 +16,47 @@ export default function App() {
     fontStyle: "normal",
     fontSize: "16px",
   });
-  const [history, setHistory] = useState([]);
-  const updateText = (updater) => {
-    setHistory((h) => [...h, text]);
-    setText(updater);
-  };
-  const undo = () => {
-    setHistory((h) => {
-      if (h.length === 0) return h;
-      const last = h[h.length - 1];
-      setText(last);
-      return h.slice(0, -1); 
-    });
-  };
+
+  // פונקציה אחת פשוטה שמעדכנת עם היסטוריה
+  function setTextWithHistory(newText) {
+    const newHistory = [...history, newText];
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setText(newText);
+  }
+
   function handleKeyPress(key) {
+    let newText;
     if (key === "Enter") {
-      updateText((t) => [...t, { text: "\n", style: style }]);
+      newText = [...text, { text: "\n", style: style }];
     } else if (key === "Space") {
-      updateText((t) => [...t, { text: " ", style: style }]);
+      newText = [...text, { text: " ", style: style }];
     } else {
-      updateText((t) => [...t, { text: key, style: style }]);
+      newText = [...text, { text: key, style: style }];
     }
+    setTextWithHistory(newText); 
   }
-  function handleTextChange(callback) {
-    updateText((prev) => callback(prev))
-  }
+
   return (
     <div style={{ padding: 20 }}>
       <TextDisplay text={text} language={language} style={style} />
       <Keyboard language={language} onKeyPress={handleKeyPress} />
-      <EditingTools onKeyPress={handleTextChange} language={language} setLanguage={setLanguage} />
-      <DesignTools style={style} setStyle={setStyle} updateText={updateText} />
-      <button onClick={undo}>Undo</button>
+      <EditingTools 
+        text={text}
+        setTextWithHistory={setTextWithHistory}  
+        history={history}
+        historyIndex={historyIndex}
+        setHistoryIndex={setHistoryIndex}
+        setText={setText}
+        language={language} 
+        setLanguage={setLanguage}
+      />
+      <DesignTools 
+        style={style} 
+        setStyle={setStyle} 
+        text={text}
+        setTextWithHistory={setTextWithHistory}  
+      />
     </div>
   );
 }
