@@ -33,7 +33,7 @@ export default function App() {
       <TextDisplay text={text} language={language} style={style} />
       <Keyboard language={language} onKeyPress={handleKeyPress} />
       <EditingTools onKeyPress={handleTextChange} language={language} setLanguage={setLanguage} />
-      <DesignTools style={style} setStyle={setStyle} />
+      <DesignTools style={style} setStyle={setStyle} setText={setText}/>
     </div>
   );
 }

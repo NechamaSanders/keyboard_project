@@ -1,0 +1,50 @@
+.editing-tools {
+  display: flex;
+  display: inline;
+  flex-direction: column;
+  background-color: #e7f7f9;
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 6px 14px rgba(0, 70, 100, 0.15);
+  width: fit-content;
+  border: 1px solid #b8e0e5;
+  margin: 10px;
+}
+
+.editing-tools .keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.editing-tools button {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: #d4f0f3;
+  border: 1px solid #a8d8dc;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 70, 100, 0.08);
+}
+
+.editing-tools button:hover {
+  background-color: #c1e9ee;
+  transform: translateY(-2px);
+}
+
+.editing-tools button:active {
+  background-color: #b0e1e7;
+  transform: translateY(0);
+}
+
+.editing-tools input,
+.editing-tools select {
+  margin: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #a8d8dc;
+  font-size: 1rem;
+}
