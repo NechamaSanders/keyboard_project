@@ -3,6 +3,8 @@ import Keyboard from "./Keyboard";
 import TextDisplay from "./TextDisplay";
 import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
+import FileTools from "./FileTools";
+
 
 export default function App() {
   const [text, setText] = useState([]);
@@ -17,7 +19,6 @@ export default function App() {
     fontSize: "16px",
   });
 
-  // פונקציה אחת פשוטה שמעדכנת עם היסטוריה
   function setTextWithHistory(newText) {
     const newHistory = [...history, newText];
     setHistory(newHistory);
@@ -50,6 +51,11 @@ export default function App() {
         setText={setText}
         language={language} 
         setLanguage={setLanguage}
+      />
+      <FileTools
+      text={text}
+        setTextWithHistory={setTextWithHistory}  
+
       />
       <DesignTools 
         style={style} 
