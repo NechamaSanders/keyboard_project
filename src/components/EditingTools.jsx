@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-import "./EditingTools.css";
+//import "./EditingTools.css";
 
 export default function EditingTools({ 
   text, 

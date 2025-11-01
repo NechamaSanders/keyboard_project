@@ -1,6 +1,6 @@
 // TextDisplay.jsx
 import React from "react";
-import "./TextDisplay.css";
+//import "./TextDisplay.css";
 export default function TextDisplay({ text, language, style }) {
     console.log("this is text")
 

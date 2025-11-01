@@ -4,7 +4,7 @@ import TextDisplay from "./TextDisplay";
 import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
 import FileTools from "./FileTools";
-
+import "./App.css";
 
 export default function App() {
   const [text, setText] = useState([]);
@@ -35,34 +35,42 @@ export default function App() {
     } else {
       newText = [...text, { text: key, style: style }];
     }
-    setTextWithHistory(newText); 
+    setTextWithHistory(newText);
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <TextDisplay text={text} language={language} style={style} />
-      <Keyboard language={language} onKeyPress={handleKeyPress} />
-      <EditingTools 
-        text={text}
-        setTextWithHistory={setTextWithHistory}  
-        history={history}
-        historyIndex={historyIndex}
-        setHistoryIndex={setHistoryIndex}
-        setText={setText}
-        language={language} 
-        setLanguage={setLanguage}
-      />
-      <FileTools
-      text={text}
-        setTextWithHistory={setTextWithHistory}  
+    <div className="app-container">
+      <div className="display-section">
+        <TextDisplay text={text} language={language} style={style} />
+      </div>
 
-      />
-      <DesignTools 
-        style={style} 
-        setStyle={setStyle} 
-        text={text}
-        setTextWithHistory={setTextWithHistory}  
-      />
+      <div className="tools-row">
+        <div className="left-tools">
+          <DesignTools style={style}
+            setStyle={setStyle}
+            text={text}
+            setTextWithHistory={setTextWithHistory} />
+            
+          <FileTools text={text}
+            setTextWithHistory={setTextWithHistory} />
+        </div>
+
+        <div className="keyboard-center">
+          <Keyboard language={language} onKeyPress={handleKeyPress} />
+          
+        </div>
+
+        <div className="right-tools">
+          <EditingTools text={text}
+            setTextWithHistory={setTextWithHistory}
+            history={history}
+            historyIndex={historyIndex}
+            setHistoryIndex={setHistoryIndex}
+            setText={setText}
+            language={language}
+            setLanguage={setLanguage} />
+        </div>
+      </div>
     </div>
   );
 }
