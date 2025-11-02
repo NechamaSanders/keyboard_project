@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from "react";
-export default function FileTools({ text, setTextWithHistory }) {
+export default function FileTools({ text, setTextWithHistory,openTexts,setOpenTexts }) {
     const [showMenu, setShowMenu] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [fileName, setFileName] = useState('');
@@ -33,7 +33,9 @@ export default function FileTools({ text, setTextWithHistory }) {
         }
     };
     const keys = Object.keys(localStorage);
+    const openFile = () => {setOpenTexts([...openTexts, []])
 
+    }
     return (
         <div className="fileTools">
             <button onClick={() => setShowMenu(!showMenu)}>
@@ -45,7 +47,7 @@ export default function FileTools({ text, setTextWithHistory }) {
                     <button onClick={loadFileList}>פתח</button>
                     {showFiles && (
                         <div className="file-list">
-                            {keys.length === 0 && <p>אין קבצים שמורים</p>}
+                            <button onClick={openFile}>+</button>
                             {keys.map((key) => (
                                 <button
                                     key={key}
