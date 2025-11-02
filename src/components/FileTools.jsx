@@ -1,71 +1,3 @@
-// import React from 'react'
-// import { useState } from "react";
-// export default function FileTools({ text, setTextWithHistory,openTexts,setOpenTexts }) {
-//     const [showMenu, setShowMenu] = useState(false);
-//     const [showFiles, setShowFiles] = useState(false);
-//     const [fileName, setFileName] = useState('');
-//     const loadFileList = () => {
-//         setShowFiles(!showFiles)
-
-//     }
-//     const loadFile = (name) => {
-//         const data = localStorage.getItem(name);
-//         console.log(data)
-//         if (data) {
-//             setTextWithHistory(JSON.parse(data));
-//             setFileName(name);
-//         }
-//     };
-//     const save = () => {
-//         if (!fileName) {
-//             alert("יש להזין שם קובץ לפני השמירה");
-//             return;
-//         }
-//         localStorage.setItem(fileName, JSON.stringify(text));
-//         alert("הקובץ נשמר!");
-//     };
-
-//     const saveAs = () => {
-//         const newName = prompt("הכניסי שם חדש לקובץ:");
-//         if (newName) {
-//             localStorage.setItem(newName, JSON.stringify(text));
-//             setFileName(newName);
-//         }
-//     };
-//     const keys = Object.keys(localStorage);
-//     const openFile = () => {setOpenTexts([...openTexts, []])
-
-//     }
-//     return (
-//         <div className="fileTools">
-//             <button onClick={() => setShowMenu(!showMenu)}>
-//                 📁 FILE
-//             </button>
-//             {showMenu && (
-//                 <div>
-//                     {/* <button onClick={newFile}>קובץ חדש</button>*/}
-//                     <button onClick={loadFileList}>פתח</button>
-//                     {showFiles && (
-//                         <div className="file-list">
-//                             <button onClick={openFile}>+</button>
-//                             {keys.map((key) => (
-//                                 <button
-//                                     key={key}
-//                                     onClick={() => loadFile(key)}
-//                                 >
-//                                     {key}
-//                                 </button>
-//                             ))}
-//                         </div>
-//                     )}
-//                     <button onClick={save}>שמור</button>
-//                     <button onClick={saveAs}>שמור בשם</button>
-
-//                 </div>
-//             )}
-//         </div>
-//     )
-// }
 import React, { useState } from "react";
 
 export default function FileTools({ text, setTextWithHistory, openTexts, setOpenTexts }) {
@@ -90,21 +22,14 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
 
     // Save (overwrite current file)
     const save = () => {
-        const regex = /^Untitled \d+$/;
-        if (regex.test(fileName)) {
-            alert("יש להזין שם קובץ לפני השמירה");
-            return;
-        }
-        console.log(fileName)
-        localStorage.setItem(fileName, JSON.stringify(text));
-        alert("הקובץ נשמר!");
-        // Update openTexts entry name if it was Untitled
-        setOpenTexts((prev) =>
-            prev.map((t) =>
-                t.content === text ? { ...t, name: fileName } : t
-            )
-        );
-    };
+    // If it's still a default "Untitled X", force Save As
+    if (/^Untitled \d+$/.test(fileName)) {
+        saveAs();
+        return;
+    }
+    localStorage.setItem(fileName, JSON.stringify(text));
+    alert("הקובץ נשמר!");
+};
 
     // Save as (new name)
     const saveAs = () => {
@@ -125,7 +50,9 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
     // New empty text
     const newFile = () => {
         const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
-        setOpenTexts([...openTexts, { name: `Untitled ${untitledCount}`, content: [] }]);
+        const newName = `Untitled ${untitledCount}`;
+        setOpenTexts([...openTexts, { name: newName, content: [] }]);
+        setFileName(newName); 
     };
 
     // Close a text
