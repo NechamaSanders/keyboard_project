@@ -8,7 +8,7 @@ import "./App.css";
 
 export default function App() {
   const [text, setText] = useState([]);
-  const [openTexts, setOpenTexts] = useState([]);
+  const [openTexts, setOpenTexts]= useState([]);
   const [history, setHistory] = useState([[]]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [language, setLanguage] = useState("english");
@@ -42,7 +42,8 @@ export default function App() {
   return (
     <div className="app-container">
       <div className="display-section">
-        <TextDisplay text={text} language={language} style={style} />
+      {openTexts.map((text)=>
+        <TextDisplay text={text} language={language} style={style} />)}
       </div>
 
       <div className="tools-row">
