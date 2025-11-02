@@ -8,6 +8,7 @@ import "./App.css";
 
 export default function App() {
   const [text, setText] = useState([]);
+  const [openTexts, setOpenTexts] = useState([]);
   const [history, setHistory] = useState([[]]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [language, setLanguage] = useState("english");
