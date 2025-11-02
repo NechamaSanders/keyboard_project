@@ -4,61 +4,80 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
     const [showMenu, setShowMenu] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [fileName, setFileName] = useState("");
+    const [currentIndex, setCurrentIndex] = useState(null);
 
     const keys = Object.keys(localStorage);
 
-    // Open list of saved files
     const loadFileList = () => setShowFiles(!showFiles);
 
-    // Load one file → add it as a new open text
     const loadFile = (name) => {
         const data = localStorage.getItem(name);
         if (data) {
             const parsed = JSON.parse(data);
-            setOpenTexts([...openTexts, { name, content: parsed }]);
+            const newTab = { name, content: parsed };
+            setOpenTexts(prev => [...prev, newTab]);
+            setCurrentIndex(openTexts.length);
             setFileName(name);
+            setTextWithHistory(parsed);
         }
     };
 
-    // Save (overwrite current file)
-    const save = () => {
-    // If it's still a default "Untitled X", force Save As
-    if (/^Untitled \d+$/.test(fileName)) {
-        saveAs();
-        return;
-    }
-    localStorage.setItem(fileName, JSON.stringify(text));
-    alert("הקובץ נשמר!");
-};
+    const newFile = () => {
+        const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
+        const newTab = { name: `Untitled ${untitledCount}`, content: [] };
+        setOpenTexts(prev => [...prev, newTab]);
+        setCurrentIndex(openTexts.length);
+        setFileName(newTab.name);
+        setTextWithHistory([]);
+    };
 
-    // Save as (new name)
+    const save = () => {
+        if (!fileName || /^Untitled \d+$/.test(fileName)) {
+            alert("יש להזין שם לקובץ או להשתמש ב'שמור בשם'");
+            return;
+        }
+
+        localStorage.setItem(fileName, JSON.stringify(text));
+        alert("הקובץ נשמר!");
+
+        if (currentIndex !== null) {
+            setOpenTexts(prev => {
+                const updated = [...prev];
+                updated[currentIndex] = {
+                    ...updated[currentIndex],
+                    name: fileName,
+                    content: text
+                };
+                return [...updated]; // יכריח רינדור חדש
+            });
+        }
+    };
+
     const saveAs = () => {
         const newName = prompt("הכניסי שם חדש לקובץ:");
         if (newName) {
             localStorage.setItem(newName, JSON.stringify(text));
-            setFileName(newName);
-            alert("הקובץ נשמר בשם חדש!");
-            // Update openTexts with new name
-            setOpenTexts((prev) =>
-                prev.map((t) =>
-                    t.content === text ? { ...t, name: newName } : t
-                )
-            );
+            setFileName(newName); alert("הקובץ נשמר בשם חדש!");
+            // Update openTexts with new name 
+            setOpenTexts((prev) => prev.map((t) => t.content === text ?
+                { ...t, name: newName } : t));
         }
     };
 
-    // New empty text
-    const newFile = () => {
-        const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
-        const newName = `Untitled ${untitledCount}`;
-        setOpenTexts([...openTexts, { name: newName, content: [] }]);
-        setFileName(newName); 
-    };
-
-    // Close a text
     const closeFile = (index) => {
         const updated = openTexts.filter((_, i) => i !== index);
         setOpenTexts(updated);
+        if (index === currentIndex) {
+            setTextWithHistory([]);
+            setFileName("");
+            setCurrentIndex(null);
+        }
+    };
+
+    const switchTab = (i) => {
+        setCurrentIndex(i);
+        setFileName(openTexts[i].name);
+        setTextWithHistory(openTexts[i].content);
     };
 
     return (
@@ -73,10 +92,7 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
                     {showFiles && (
                         <div className="file-list">
                             {keys.map((key) => (
-                                <button
-                                    key={key}
-                                    onClick={() => loadFile(key)}
-                                >
+                                <button key={key} onClick={() => loadFile(key)}>
                                     {key}
                                 </button>
                             ))}
@@ -88,14 +104,21 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
                 </div>
             )}
 
-            {/* Tabs for open texts */}
+            {/* Tabs */}
             <div className="tabs">
                 {openTexts.map((t, i) => (
-                    <div key={i} className="tab">
-                        {t.name}
+                    <div
+                        key={i}
+                        className={`tab ${i === currentIndex ? "active" : ""}`}
+                        onClick={() => switchTab(i)}
+                    >
+                        {t.name || "Untitled"}
                         <button
                             className="close-tab"
-                            onClick={() => closeFile(i)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                closeFile(i);
+                            }}
                         >
                             ×
                         </button>
