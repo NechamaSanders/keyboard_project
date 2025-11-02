@@ -261,3 +261,52 @@ input:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #b4e1f7;
 }
+.display-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.text-container {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.text-container.active {
+  border-color: #74c6f8;
+  box-shadow: 0 0 10px rgba(0, 140, 255, 0.2);
+}
+
+.new-text-btn {
+  background: #dff4ff;
+  border: 1px solid #bde7ff;
+  border-radius: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin: 10px auto;
+  display: block;
+  transition: all 0.15s ease;
+}
+
+.new-text-btn:hover {
+  background: #c8edff;
+  transform: translateY(-1px);
+}
+input{
+  min-height: 30px;
+}
+.new-text-btn:active {
+  background: #bde7ff;
+  transform: translateY(0);
+}
+.text-title {
+  text-align: center;
+  font-size: 16px;
+  color: #036b9c;
+  margin-bottom: 8px;
+}

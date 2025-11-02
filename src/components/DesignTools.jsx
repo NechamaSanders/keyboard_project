@@ -38,22 +38,9 @@ export default function DesignTools({ style, setStyle, text, setTextWithHistory 
                 <option value="Tahoma">Tahoma</option>
             </select>
             <button onClick={applyToAll}>Apply to all</button>
-            <select
-                value={style.color}
-                onChange={(e) => changeColor(e.target.value)}
-                style={{ marginBottom: 10 }}
-            >
-                <option value="red">Red</option>
-                <option value="orange">Orange</option>
-                <option value="yellow">Yellow</option>
-                <option value="green">Green</option>
-                <option value="blue">Blue</option>
-                <option value="purple">Purple</option>
-                <option value="pink">Pink</option>
-                <option value="black">Black</option>
-                <option value="brown">Brown</option>
-                <option value="gray">Gray</option>
-            </select>
+          
+            <input type="color" value={style.color}
+                onChange={(e) => changeColor(e.target.value)}></input>
             <select
                 value={style.fontSize}
                 onChange={(e) => changeSize(e.target.value)}

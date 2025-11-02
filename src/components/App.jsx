@@ -8,12 +8,15 @@ import "./App.css";
 
 export default function App() {
   const [text, setText] = useState([]);
-  const [openTexts, setOpenTexts]= useState([]);
+  const [openTexts, setOpenTexts] = useState([
+    { name: "Untitled 1", content: [] },
+  ]);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [history, setHistory] = useState([[]]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [language, setLanguage] = useState("english");
   const [style, setStyle] = useState({
-    color: "black",
+    color: "#000000",
     fontFamily: "Arial",
     fontWeight: "normal",
     fontStyle: "normal",
@@ -25,7 +28,12 @@ export default function App() {
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
     setText(newText);
+
+    const updated = [...openTexts];
+    updated[activeIndex] = { ...updated[activeIndex], content: newText };
+    setOpenTexts(updated);
   }
+
 
   function handleKeyPress(key) {
     let newText;
@@ -41,25 +49,49 @@ export default function App() {
 
   return (
     <div className="app-container">
+      <button
+        className="new-text-btn"
+        onClick={() => {
+          const newTexts = [
+            ...openTexts,
+            { name: `Untitled ${openTexts.length + 1}`, content: [] },
+          ];
+          setOpenTexts(newTexts);
+          setActiveIndex(newTexts.length - 1);
+          setText([]);
+        }}
+      >
+        ➕ New Text
+      </button>
       <div className="display-section">
-      {openTexts.map((text)=>
-        <TextDisplay text={text} language={language} style={style} />)}
+        {openTexts.map((t, i) => (
+          <div
+            key={i}
+            className={`text-container ${i === activeIndex ? "active" : ""}`}
+            onClick={() => {
+              setActiveIndex(i);
+              setText(t.content);
+            }}
+          >
+            <h3 className="text-title">{t.name}</h3>
+            <TextDisplay text={t.content} language={language} style={style} />
+          </div>
+        ))}
       </div>
-
       <div className="tools-row">
         <div className="left-tools">
           <DesignTools style={style}
             setStyle={setStyle}
             text={text}
             setTextWithHistory={setTextWithHistory} />
-            
+
           <FileTools text={text}
-            setTextWithHistory={setTextWithHistory} />
+            setTextWithHistory={setTextWithHistory}  openTexts={openTexts} setOpenTexts={setOpenTexts}/>
         </div>
 
         <div className="keyboard-center">
           <Keyboard language={language} onKeyPress={handleKeyPress} />
-          
+
         </div>
 
         <div className="right-tools">

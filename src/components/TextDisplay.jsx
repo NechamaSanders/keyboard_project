@@ -2,11 +2,6 @@
 import React from "react";
 //import "./TextDisplay.css";
 export default function TextDisplay({ text, language, style }) {
-    console.log("this is text")
-
-    console.log(text)
-    console.log(style)
-
     const direction = (language === "hebrew")
     return (
         <div className="text-display" style={{
