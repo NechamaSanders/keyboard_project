@@ -54,64 +54,83 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <button
-        className="new-text-btn"
-        onClick={() => {
-          const newTab = { 
-            name: `Untitled ${openTexts.length + 1}`, 
-            content: [], 
-            history: [[]], 
-            historyIndex: 0 
-          };
-          const newTexts = [newTab, ...openTexts];
-          setOpenTexts(newTexts);
-          setActiveIndex(0);
-          setText([]);
-          setHistory([[]]);
-          setHistoryIndex(0);
-
-        }}
-      >
-        ➕ New Text
-      </button>
-      <div className="display-section">
-        {openTexts.map((t, i) => (
-          <div
-            key={i}
-            className={`text-container ${i === activeIndex ? "active" : ""}`}
-            onClick={() => {
-              setActiveIndex(i);
-              setText(t.content);
-              setHistory(t.history || [[]]);
-              setHistoryIndex(t.historyIndex || 0);
-            }}
-          >
-            <h3 className="text-title">{t.name}</h3>
-            <TextDisplay text={t.content} language={language} style={style} />
-          </div>
-        ))}
+      {/* אזור תצוגת הטקסט - למעלה */}
+      <div className="top-section">
+        <button
+          className="new-text-btn"
+          onClick={() => {
+            const newTab = { 
+              name: `Untitled ${openTexts.length + 1}`, 
+              content: [], 
+              history: [[]], 
+              historyIndex: 0 
+            };
+            const newTexts = [newTab, ...openTexts];
+            setOpenTexts(newTexts);
+            setActiveIndex(0);
+            setText([]);
+            setHistory([[]]);
+            setHistoryIndex(0);
+          }}
+        >
+          ➕ New Text
+        </button>
+        
+        <div className="display-section">
+          {openTexts.map((t, i) => (
+            <div
+              key={i}
+              className={`text-container ${i === activeIndex ? "active" : ""}`}
+              onClick={() => {
+                setActiveIndex(i);
+                setText(t.content);
+                setHistory(t.history || [[]]);
+                setHistoryIndex(t.historyIndex || 0);
+              }}
+            >
+              <h3 className="text-title">
+                <span>{t.name}</span>
+                {openTexts.length > 1 && (
+                  <button 
+                    className="close-tab"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const updated = openTexts.filter((_, index) => index !== i);
+                      setOpenTexts(updated);
+                      
+                      if (i === activeIndex) {
+                        const newActiveIndex = i > 0 ? i - 1 : 0;
+                        setActiveIndex(newActiveIndex);
+                        const newTab = updated[newActiveIndex];
+                        if (newTab) {
+                          setText(newTab.content);
+                          setHistory(newTab.history || [[]]);
+                          setHistoryIndex(newTab.historyIndex || 0);
+                        }
+                      } else if (i < activeIndex) {
+                        setActiveIndex(activeIndex - 1);
+                      }
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
+              </h3>
+              <TextDisplay text={t.content} language={language} style={style} />
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="tools-row">
-        <div className="left-tools">
-          <DesignTools style={style}
-            setStyle={setStyle}
-            text={text}
-            setTextWithHistory={setTextWithHistory} />
 
-          <FileTools text={text}
-            setTextWithHistory={setTextWithHistory} 
-            openTexts={openTexts} 
-            setOpenTexts={setOpenTexts}
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}/>
-        </div>
-
-        <div className="keyboard-center">
+      {/* אזור הכלים והמקלדות - למטה */}
+      <div className="bottom-section">
+        {/* מקלדת ראשית - הכי גדולה */}
+        <div className="main-keyboard">
           <Keyboard language={language} onKeyPress={handleKeyPress} />
-
         </div>
 
-        <div className="right-tools">
+        {/* פעולות מיוחדות */}
+        <div className="special-tools">
           <EditingTools text={text}
             setTextWithHistory={setTextWithHistory}
             history={history}
@@ -132,6 +151,24 @@ export default function App() {
             setOpenTexts={setOpenTexts}
             activeIndex={activeIndex} />
         </div>
+
+        {/* כלי עיצוב */}
+        <div className="design-tools-section">
+          <DesignTools style={style}
+            setStyle={setStyle}
+            text={text}
+            setTextWithHistory={setTextWithHistory} />
+        </div>
+      </div>
+
+      {/* קבצים - בצד ימין */}
+      <div className="file-sidebar">
+        <FileTools text={text}
+          setTextWithHistory={setTextWithHistory} 
+          openTexts={openTexts} 
+          setOpenTexts={setOpenTexts}
+          activeIndex={activeIndex}
+          setActiveIndex={setActiveIndex}/>
       </div>
     </div>
   );

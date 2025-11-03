@@ -49,97 +49,124 @@ select:focus {
 /* ===== Base ===== */
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:100vw;
+  width: 100vw;
+  overflow: hidden;
+  background: #f8fafc;
 }
 
 #root {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
 }
 
-/* ===== App Container ===== */
+/* ===== App Container - מסך מלא ללא רווחים ===== */
 .app-container {
-  width: 90%;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-areas: 
+    "top-section top-section file-sidebar"
+    "bottom-section bottom-section file-sidebar";
+  grid-template-columns: 2fr 1fr 300px;
+  grid-template-rows: 65% 35%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
 
-  height: 90vh;
+/* ===== אזור עליון - תצוגת טקסט ===== */
+.top-section {
+  grid-area: top-section;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 24px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  padding: 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  overflow: hidden;
+  margin: 0;
 }
 
-/* ===== Display Section ===== */
 .display-section {
-  width: 100%;
+  flex: 1;
   display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+  overflow: hidden;
+  align-content: flex-start;
+  padding: 0;
+  margin: 0;
 }
 
 .text-display {
-  width: 90%;
-  min-height: 180px;
-  background: #ffffffc5;
-  border: 1px solid #c9e8f5;
-  border-radius: 16px;
-  padding: 15px 20px;
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
-  overflow-y: auto;
-  line-height: 1.6;
-  font-size: 16px;
-  color: #03425e;
+  flex: 1;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px;
+  overflow: hidden;
+  line-height: 1.4;
+  font-size: 14px;
+  color: #374151;
   white-space: pre-wrap;
+  margin-top: 5px;
 }
 
-/* ===== Tools and Keyboard Row ===== */
-.tools-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
-  margin-top: 10px;
+/* ===== אזור תחתון - מקלדות וכלים ===== */
+.bottom-section {
+  grid-area: bottom-section;
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  gap: 0;
+  margin: 0;
+  padding: 0;
 }
 
-/* Left Tools */
-.left-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 18%;
-  align-items: center;
-  justify-content: flex-end;
-  height: 30vh;
-}
-
-/* Right Tools */
-.right-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 18%;
-  align-items: center;
-  justify-content: flex-end;
-  height: 30vh;
-}
-
-/* Center Keyboard */
-.keyboard-center {
-  flex-grow: 1;
+/* מקלדת ראשית - הכי גדולה */
+.main-keyboard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* פעולות מיוחדות */
+.special-tools {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* כלי עיצוב */
+.design-tools-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* סיידבאר קבצים - בצד ימין */
+.file-sidebar {
+  grid-area: file-sidebar;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ===== Keyboard ===== */
@@ -147,23 +174,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f2faff;
-  border: 1px solid #c9e8f5;
-  border-radius: 16px;
-  padding: 10px 15px;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px;
   width: 100%;
-  max-width: 550px;
-  height: 300px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  overflow: hidden;
+  justify-content: space-between;
 }
 
 .keyboard-scroll {
-  max-height: 280px;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  align-items: center;
+  gap: 3px;
 }
 
 .keyboard-bottom {
@@ -199,33 +226,157 @@ body {
 .editing-tools,
 .fileTools,
 .design-tools {
-  background: #f7fcff;
-  border: 1px solid #cde6f2;
-  border-radius: 12px;
-  padding: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+  background: transparent;
+  border: none;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   width: 100%;
-  height:100%;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+/* סטיילים לכלי עיצוב */
+.design-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.design-tools button,
+.design-tools select,
+.design-tools input {
+  flex: 1 1 45%;
+  padding: 2px;
+  font-size: 8px;
+  margin: 0;
+  height: 18px;
+  min-width: 35px;
+}
+
+/* סטיילים לכלי קבצים */
+.fileTools {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fileTools .file-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.fileTools button,
+.fileTools .file-menu button {
+  flex: 1 1 45%;
+  padding: 2px;
+  font-size: 8px;
+  margin: 0;
+  height: 18px;
+  min-width: 35px;
+}
+
+.fileTools .tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+}
+
+.fileTools .tab {
+  width: 100%;
+  padding: 1px;
+  font-size: 8px;
+  margin: 0;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* כפתור FILE הראשי - קצר יותר */
+.fileTools > button:first-child {
+  flex: 0 0 auto;
+  width: 50px;
+  padding: 2px 4px;
+  font-size: 10px;
+  height: 20px;
+  margin-bottom: 3px;
+}
+
+.editing-tools .keyboard-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px;
+  width: 100%;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.editing-tools select {
+  width: 100%;
+  padding: 2px;
+  font-size: 10px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin: 1px 0;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+  height: 20px;
+  flex: 1 1 100%;
+}
+
+.editing-tools select:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+.editing-tools select option {
+  background: white;
+  color: #374151;
+  padding: 1px;
+}
+
+.editing-tools button {
+  flex: 1 1 45%;
+  padding: 2px;
+  font-size: 8px;
+  margin: 0;
+  height: 18px;
+  min-width: 40px;
+}
+
+.editing-tools input {
+  flex: 1 1 45%;
+  padding: 1px;
+  font-size: 8px;
+  margin: 0;
+  height: 16px;
+  min-width: 35px;
 }
 
 button {
-  background: #dff4ff;
-  border: 1px solid #bde7ff;
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
-  color: #036b9c;
+  color: #475569;
+  font-weight: 500;
 }
 
 button:hover {
-  background: #c8edff;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
 }
 
 /* ===== Select Inputs ===== */
@@ -264,38 +415,77 @@ input:focus {
 .display-section {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   padding: 20px;
   flex-wrap: wrap;
+  transition: all 0.3s ease;
+  align-items: flex-start;
 }
 
 .text-container {
   border: 2px solid transparent;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.8);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  flex: 1;
+  min-width: 250px;
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
 }
 
+/* אנימציה פשוטה ללא תזוזה */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* טאב פעיל - בולט וברור */
 .text-container.active {
-  border-color: #74c6f8;
-  box-shadow: 0 0 10px rgba(0, 140, 255, 0.2);
+  border-color: #007acc;
+  box-shadow: 0 0 8px rgba(0, 122, 204, 0.2);
+  opacity: 1;
+  z-index: 2;
+  background: white;
+}
+
+/* טאבים לא פעילים - מעומעמים */
+.text-container:not(.active) {
+  opacity: 0.6;
+  background: #f1f5f9;
+}
+
+/* אפקט hover לטאבים לא פעילים */
+.text-container:not(.active):hover {
+  opacity: 0.8;
+  background: #e2e8f0;
 }
 
 .new-text-btn {
-  background: #dff4ff;
-  border: 1px solid #bde7ff;
-  border-radius: 10px;
-  padding: 6px 12px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
   cursor: pointer;
-  margin: 10px auto;
-  display: block;
-  transition: all 0.15s ease;
+  margin-bottom: 10px;
+  align-self: flex-start;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  height: 40px;
 }
 
 .new-text-btn:hover {
-  background: #c8edff;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
 }
 input{
   min-height: 30px;
@@ -309,4 +499,36 @@ input{
   font-size: 16px;
   color: #036b9c;
   margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* כפתור סגירה */
+.close-tab {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* כפתור סגירה נראה רק כשמרחפים על הטאב */
+.text-container:hover .close-tab {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.close-tab:hover {
+  background: #ff5252;
 }
