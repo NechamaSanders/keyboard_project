@@ -86,7 +86,11 @@ export default function App() {
             setTextWithHistory={setTextWithHistory} />
 
           <FileTools text={text}
-            setTextWithHistory={setTextWithHistory}  openTexts={openTexts} setOpenTexts={setOpenTexts}/>
+            setTextWithHistory={setTextWithHistory} 
+            openTexts={openTexts} 
+            setOpenTexts={setOpenTexts}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}/>
         </div>
 
         <div className="keyboard-center">

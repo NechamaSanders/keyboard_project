@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
-export default function FileTools({ text, setTextWithHistory, openTexts, setOpenTexts }) {
+export default function FileTools({ text, setTextWithHistory, openTexts, setOpenTexts, activeIndex, setActiveIndex }) {
     const [showMenu, setShowMenu] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [fileName, setFileName] = useState("");
-    const [currentIndex, setCurrentIndex] = useState(null);
 
     const keys = Object.keys(localStorage);
 
@@ -16,7 +15,7 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
             const parsed = JSON.parse(data);
             const newTab = { name, content: parsed };
             setOpenTexts(prev => [...prev, newTab]);
-            setCurrentIndex(openTexts.length);
+            setActiveIndex(openTexts.length);
             setFileName(name);
             setTextWithHistory(parsed);
         }
@@ -26,7 +25,7 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
         const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
         const newTab = { name: `Untitled ${untitledCount}`, content: [] };
         setOpenTexts(prev => [...prev, newTab]);
-        setCurrentIndex(openTexts.length);
+        setActiveIndex(openTexts.length);
         setFileName(newTab.name);
         setTextWithHistory([]);
     };
@@ -40,42 +39,51 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
         localStorage.setItem(fileName, JSON.stringify(text));
         alert("הקובץ נשמר!");
 
-        if (currentIndex !== null) {
+        if (activeIndex !== null) {
             setOpenTexts(prev => {
                 const updated = [...prev];
-                updated[currentIndex] = {
-                    ...updated[currentIndex],
+                updated[activeIndex] = {
+                    ...updated[activeIndex],
                     name: fileName,
                     content: text
                 };
-                return [...updated]; // יכריח רינדור חדש
+                return updated;
             });
         }
     };
 
-    const saveAs = () => {
-        const newName = prompt("הכניסי שם חדש לקובץ:");
-        if (newName) {
-            localStorage.setItem(newName, JSON.stringify(text));
-            setFileName(newName); alert("הקובץ נשמר בשם חדש!");
-            // Update openTexts with new name 
-            setOpenTexts((prev) => prev.map((t) => t.content === text ?
-                { ...t, name: newName } : t));
+   const saveAs = () => {
+    const newName = prompt("הכניסי שם חדש לקובץ:");
+    if (newName) {
+        localStorage.setItem(newName, JSON.stringify(text));
+        setFileName(newName);
+        alert("הקובץ נשמר בשם חדש!");
+        
+        if (activeIndex !== null) {
+            setOpenTexts(prev => {
+                const updated = [...prev];
+                updated[activeIndex] = {
+                    name: newName,
+                    content: text
+                };
+                return updated;
+            });
         }
-    };
+    }
+};
 
     const closeFile = (index) => {
         const updated = openTexts.filter((_, i) => i !== index);
         setOpenTexts(updated);
-        if (index === currentIndex) {
+        if (index === activeIndex) {
             setTextWithHistory([]);
             setFileName("");
-            setCurrentIndex(null);
+            setActiveIndex(null);
         }
     };
 
     const switchTab = (i) => {
-        setCurrentIndex(i);
+        setActiveIndex(i);
         setFileName(openTexts[i].name);
         setTextWithHistory(openTexts[i].content);
     };
@@ -109,7 +117,7 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
                 {openTexts.map((t, i) => (
                     <div
                         key={i}
-                        className={`tab ${i === currentIndex ? "active" : ""}`}
+                        className={`tab ${i === activeIndex ? "active" : ""}`}
                         onClick={() => switchTab(i)}
                     >
                         {t.name || "Untitled"}
