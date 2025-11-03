@@ -46,11 +46,12 @@ export default function EditingTools({
             setHistoryIndex(newIndex);
             setText(history[newIndex]);
             
-            // עדכון המאגר
+            // Update openTexts as well
             const updated = [...openTexts];
             updated[activeIndex] = {
                 ...updated[activeIndex],
-                content: history[newIndex]
+                content: history[newIndex],
+                historyIndex: newIndex
             };
             setOpenTexts(updated);
         }
@@ -62,11 +63,12 @@ export default function EditingTools({
             setHistoryIndex(newIndex);
             setText(history[newIndex]);
             
-            // עדכון המאגר
+            // Update openTexts as well
             const updated = [...openTexts];
             updated[activeIndex] = {
                 ...updated[activeIndex],
-                content: history[newIndex]
+                content: history[newIndex],
+                historyIndex: newIndex
             };
             setOpenTexts(updated);
         }

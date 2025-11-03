@@ -54,96 +54,74 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* אזור תצוגת הטקסט - למעלה */}
-      <div className="top-section">
-        <button
-          className="new-text-btn"
-          onClick={() => {
-            const newTab = { 
-              name: `Untitled ${openTexts.length + 1}`, 
-              content: [], 
-              history: [[]], 
-              historyIndex: 0 
-            };
-            const newTexts = [newTab, ...openTexts];
-            setOpenTexts(newTexts);
-            setActiveIndex(0);
-            setText([]);
-            setHistory([[]]);
-            setHistoryIndex(0);
-          }}
-        >
-          ➕ New Text
-        </button>
-        
-        <div className="display-section">
-          {openTexts.map((t, i) => (
-            <div
-              key={i}
-              className={`text-container ${i === activeIndex ? "active" : ""}`}
-              onClick={() => {
-                setActiveIndex(i);
-                setText(t.content);
-                setHistory(t.history || [[]]);
-                setHistoryIndex(t.historyIndex || 0);
-              }}
-            >
-              <h3 className="text-title">
-                <span>{t.name}</span>
-                {openTexts.length > 1 && (
-                  <button 
-                    className="close-tab"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const updated = openTexts.filter((_, index) => index !== i);
-                      setOpenTexts(updated);
-                      
-                      if (i === activeIndex) {
-                        const newActiveIndex = i > 0 ? i - 1 : 0;
-                        setActiveIndex(newActiveIndex);
-                        const newTab = updated[newActiveIndex];
-                        if (newTab) {
-                          setText(newTab.content);
-                          setHistory(newTab.history || [[]]);
-                          setHistoryIndex(newTab.historyIndex || 0);
-                        }
-                      } else if (i < activeIndex) {
-                        setActiveIndex(activeIndex - 1);
-                      }
-                    }}
-                  >
-                    ×
-                  </button>
-                )}
-              </h3>
-              <TextDisplay text={t.content} language={language} style={style} />
-            </div>
-          ))}
-        </div>
+      <button
+        className="new-text-btn"
+        onClick={() => {
+          const newTexts = [
+            { name: `Untitled ${openTexts.length + 1}`, content: [], history: [[]], historyIndex: 0 },
+            ...openTexts,
+          ];
+          setOpenTexts(newTexts);
+          setActiveIndex(0);
+          setText([]);
+          setHistory([[]]);
+          setHistoryIndex(0);
+        }}
+      >
+        ➕ New Text
+      </button>
+      <div className="display-section">
+        {openTexts.map((t, i) => (
+          <div
+            key={i}
+            className={`text-container ${i === activeIndex ? "active" : ""}`}
+            onClick={() => {
+              // Save current tab's history before switching
+              if (activeIndex !== null && activeIndex !== i) {
+                const updated = [...openTexts];
+                updated[activeIndex] = {
+                  ...updated[activeIndex],
+                  history: history,
+                  historyIndex: historyIndex
+                };
+                setOpenTexts(updated);
+              }
+              
+              setActiveIndex(i);
+              setText(t.content);
+              setHistory(t.history || [[]]);
+              setHistoryIndex(t.historyIndex || 0);
+            }}
+          >
+            <h3 className="text-title">{t.name}</h3>
+            <TextDisplay text={t.content} language={language} style={style} />
+          </div>
+        ))}
       </div>
+      <div className="tools-row">
+        <div className="left-tools">
+          <DesignTools style={style}
+            setStyle={setStyle}
+            text={text}
+            setTextWithHistory={setTextWithHistory} />
 
-      {/* אזור הכלים והמקלדות - למטה */}
-      <div className="bottom-section">
-        {/* מקלדת ראשית - הכי גדולה */}
-        <div className="main-keyboard">
-          <Keyboard language={language} onKeyPress={handleKeyPress} />
+          <FileTools text={text}
+            setTextWithHistory={setTextWithHistory}  openTexts={openTexts} setOpenTexts={setOpenTexts}
+            activeIndex={activeIndex} setActiveIndex={setActiveIndex}
+            setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex}/>
         </div>
 
-        {/* פעולות מיוחדות */}
-        <div className="special-tools">
+        <div className="keyboard-center">
+          <Keyboard language={language} onKeyPress={handleKeyPress} />
+
+        </div>
+
+        <div className="right-tools">
           <EditingTools text={text}
             setTextWithHistory={setTextWithHistory}
             history={history}
             historyIndex={historyIndex}
-            setHistoryIndex={(newIndex) => {
-              setHistoryIndex(newIndex);
-              const updated = [...openTexts];
-              updated[activeIndex] = {
-                ...updated[activeIndex],
-                historyIndex: newIndex
-              };
-              setOpenTexts(updated);
-            }}
+            setHistoryIndex={setHistoryIndex}
             setText={setText}
             language={language}
             setLanguage={setLanguage}
@@ -151,24 +129,6 @@ export default function App() {
             setOpenTexts={setOpenTexts}
             activeIndex={activeIndex} />
         </div>
-
-        {/* כלי עיצוב */}
-        <div className="design-tools-section">
-          <DesignTools style={style}
-            setStyle={setStyle}
-            text={text}
-            setTextWithHistory={setTextWithHistory} />
-        </div>
-      </div>
-
-      {/* קבצים - בצד ימין */}
-      <div className="file-sidebar">
-        <FileTools text={text}
-          setTextWithHistory={setTextWithHistory} 
-          openTexts={openTexts} 
-          setOpenTexts={setOpenTexts}
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}/>
       </div>
     </div>
   );
