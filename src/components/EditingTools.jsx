@@ -10,7 +10,10 @@ export default function EditingTools({
   setHistoryIndex,
   setText,
   language, 
-  setLanguage 
+  setLanguage,
+  openTexts,
+  setOpenTexts,
+  activeIndex
 }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [changeFrom, setChangeFrom] = useState("");
@@ -42,6 +45,14 @@ export default function EditingTools({
             const newIndex = historyIndex - 1;
             setHistoryIndex(newIndex);
             setText(history[newIndex]);
+            
+            // עדכון המאגר
+            const updated = [...openTexts];
+            updated[activeIndex] = {
+                ...updated[activeIndex],
+                content: history[newIndex]
+            };
+            setOpenTexts(updated);
         }
     };
 
@@ -50,6 +61,14 @@ export default function EditingTools({
             const newIndex = historyIndex + 1;
             setHistoryIndex(newIndex);
             setText(history[newIndex]);
+            
+            // עדכון המאגר
+            const updated = [...openTexts];
+            updated[activeIndex] = {
+                ...updated[activeIndex],
+                content: history[newIndex]
+            };
+            setOpenTexts(updated);
         }
     };
 

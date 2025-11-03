@@ -13,7 +13,12 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
         const data = localStorage.getItem(name);
         if (data) {
             const parsed = JSON.parse(data);
-            const newTab = { name, content: parsed };
+            const newTab = { 
+                name, 
+                content: parsed, 
+                history: [[], parsed], 
+                historyIndex: 1 
+            };
             setOpenTexts(prev => [...prev, newTab]);
             setActiveIndex(openTexts.length);
             setFileName(name);
@@ -23,11 +28,16 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
 
     const newFile = () => {
         const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
-        const newTab = { name: `Untitled ${untitledCount}`, content: [] };
+        const newTab = { 
+            name: `Untitled ${untitledCount}`, 
+            content: [], 
+            history: [[]], 
+            historyIndex: 0 
+        };
         setOpenTexts(prev => [newTab, ...prev]);
         setActiveIndex(0);
         setFileName(newTab.name);
-        setTextWithHistory([]);
+        setText([]);
     };
 
     const save = () => {

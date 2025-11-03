@@ -9,7 +9,7 @@ import "./App.css";
 export default function App() {
   const [text, setText] = useState([]);
   const [openTexts, setOpenTexts] = useState([
-    { name: "Untitled 1", content: [] },
+    { name: "Untitled 1", content: [], history: [[]], historyIndex: 0 },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [history, setHistory] = useState([[]]);
@@ -30,7 +30,12 @@ export default function App() {
     setText(newText);
 
     const updated = [...openTexts];
-    updated[activeIndex] = { ...updated[activeIndex], content: newText };
+    updated[activeIndex] = { 
+      ...updated[activeIndex], 
+      content: newText,
+      history: newHistory,
+      historyIndex: newHistory.length - 1
+    };
     setOpenTexts(updated);
   }
 
@@ -52,11 +57,18 @@ export default function App() {
       <button
         className="new-text-btn"
         onClick={() => {
-          const newTab = { name: `Untitled ${openTexts.length + 1}`, content: [] };
+          const newTab = { 
+            name: `Untitled ${openTexts.length + 1}`, 
+            content: [], 
+            history: [[]], 
+            historyIndex: 0 
+          };
           const newTexts = [newTab, ...openTexts];
           setOpenTexts(newTexts);
           setActiveIndex(0);
           setText([]);
+          setHistory([[]]);
+          setHistoryIndex(0);
 
         }}
       >
@@ -70,6 +82,8 @@ export default function App() {
             onClick={() => {
               setActiveIndex(i);
               setText(t.content);
+              setHistory(t.history || [[]]);
+              setHistoryIndex(t.historyIndex || 0);
             }}
           >
             <h3 className="text-title">{t.name}</h3>
@@ -102,10 +116,21 @@ export default function App() {
             setTextWithHistory={setTextWithHistory}
             history={history}
             historyIndex={historyIndex}
-            setHistoryIndex={setHistoryIndex}
+            setHistoryIndex={(newIndex) => {
+              setHistoryIndex(newIndex);
+              const updated = [...openTexts];
+              updated[activeIndex] = {
+                ...updated[activeIndex],
+                historyIndex: newIndex
+              };
+              setOpenTexts(updated);
+            }}
             setText={setText}
             language={language}
-            setLanguage={setLanguage} />
+            setLanguage={setLanguage}
+            openTexts={openTexts}
+            setOpenTexts={setOpenTexts}
+            activeIndex={activeIndex} />
         </div>
       </div>
     </div>
