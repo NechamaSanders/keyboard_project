@@ -24,8 +24,8 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
     const newFile = () => {
         const untitledCount = openTexts.filter(t => t.name.startsWith("Untitled")).length + 1;
         const newTab = { name: `Untitled ${untitledCount}`, content: [] };
-        setOpenTexts(prev => [...prev, newTab]);
-        setActiveIndex(openTexts.length);
+        setOpenTexts(prev => [newTab, ...prev]);
+        setActiveIndex(0);
         setFileName(newTab.name);
         setTextWithHistory([]);
     };
@@ -75,6 +75,9 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
     const closeFile = (index) => {
         const updated = openTexts.filter((_, i) => i !== index);
         setOpenTexts(updated);
+        
+
+        
         if (index === activeIndex) {
             setTextWithHistory([]);
             setFileName("");

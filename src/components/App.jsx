@@ -52,13 +52,12 @@ export default function App() {
       <button
         className="new-text-btn"
         onClick={() => {
-          const newTexts = [
-            ...openTexts,
-            { name: `Untitled ${openTexts.length + 1}`, content: [] },
-          ];
+          const newTab = { name: `Untitled ${openTexts.length + 1}`, content: [] };
+          const newTexts = [newTab, ...openTexts];
           setOpenTexts(newTexts);
-          setActiveIndex(newTexts.length - 1);
+          setActiveIndex(0);
           setText([]);
+
         }}
       >
         ➕ New Text
