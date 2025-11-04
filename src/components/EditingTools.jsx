@@ -41,37 +41,43 @@ export default function EditingTools({
     };
 
     const undo = () => {
-        if (historyIndex > 0) {
-            const newIndex = historyIndex - 1;
-            setHistoryIndex(newIndex);
-            setText(history[newIndex]);
-            
-            // Update openTexts as well
-            const updated = [...openTexts];
-            updated[activeIndex] = {
-                ...updated[activeIndex],
-                content: history[newIndex],
-                historyIndex: newIndex
-            };
-            setOpenTexts(updated);
+        // בדיקה שיש טאב פעיל
+        if (activeIndex === null || !openTexts[activeIndex] || historyIndex <= 0) {
+            return;
         }
+        
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setText(history[newIndex]);
+        
+        // Update openTexts as well
+        const updated = [...openTexts];
+        updated[activeIndex] = {
+            ...updated[activeIndex],
+            content: history[newIndex],
+            historyIndex: newIndex
+        };
+        setOpenTexts(updated);
     };
 
     const redo = () => {
-        if (historyIndex < history.length - 1) {
-            const newIndex = historyIndex + 1;
-            setHistoryIndex(newIndex);
-            setText(history[newIndex]);
-            
-            // Update openTexts as well
-            const updated = [...openTexts];
-            updated[activeIndex] = {
-                ...updated[activeIndex],
-                content: history[newIndex],
-                historyIndex: newIndex
-            };
-            setOpenTexts(updated);
+        // בדיקה שיש טאב פעיל
+        if (activeIndex === null || !openTexts[activeIndex] || historyIndex >= history.length - 1) {
+            return;
         }
+        
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setText(history[newIndex]);
+        
+        // Update openTexts as well
+        const updated = [...openTexts];
+        updated[activeIndex] = {
+            ...updated[activeIndex],
+            content: history[newIndex],
+            historyIndex: newIndex
+        };
+        setOpenTexts(updated);
     };
 
     const onSearch = () => {
@@ -159,20 +165,20 @@ export default function EditingTools({
             <div className="keyboard-row">
                 <button 
                     onClick={undo}
-                    disabled={historyIndex <= 0}
+                    disabled={activeIndex === null || !openTexts[activeIndex] || historyIndex <= 0}
                     style={{ 
-                        opacity: historyIndex > 0 ? 1 : 0.5,
-                        cursor: historyIndex > 0 ? "pointer" : "not-allowed"
+                        opacity: (activeIndex !== null && openTexts[activeIndex] && historyIndex > 0) ? 1 : 0.5,
+                        cursor: (activeIndex !== null && openTexts[activeIndex] && historyIndex > 0) ? "pointer" : "not-allowed"
                     }}
                 >
                     Undo
                 </button>
                 <button 
                     onClick={redo}
-                    disabled={historyIndex >= history.length - 1}
+                    disabled={activeIndex === null || !openTexts[activeIndex] || historyIndex >= history.length - 1}
                     style={{ 
-                        opacity: historyIndex < history.length - 1 ? 1 : 0.5,
-                        cursor: historyIndex < history.length - 1 ? "pointer" : "not-allowed"
+                        opacity: (activeIndex !== null && openTexts[activeIndex] && historyIndex < history.length - 1) ? 1 : 0.5,
+                        cursor: (activeIndex !== null && openTexts[activeIndex] && historyIndex < history.length - 1) ? "pointer" : "not-allowed"
                     }}
                 >
                     Redo

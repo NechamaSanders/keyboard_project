@@ -26,6 +26,11 @@ export default function App() {
   });
 
   function setTextWithHistory(newText) {
+    // בדיקה שיש טאב פעיל
+    if (activeIndex === null || !openTexts[activeIndex]) {
+      return;
+    }
+    
     const newHistory = [...history, newText];
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
