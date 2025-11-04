@@ -24,6 +24,11 @@ export default function App() {
   });
 
   function setTextWithHistory(newText) {
+    // בדיקה שיש טאב פעיל
+    if (activeIndex === null || !openTexts[activeIndex]) {
+      return;
+    }
+    
     const newHistory = [...history, newText];
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
@@ -70,14 +75,14 @@ export default function App() {
       >
         ➕ New Text
       </button>
-      <div className="display-section">
+      <div className="display-section" style={{'--tab-count': openTexts.length}}>
         {openTexts.map((t, i) => (
           <div
             key={i}
             className={`text-container ${i === activeIndex ? "active" : ""}`}
             onClick={() => {
               // Save current tab's history before switching
-              if (activeIndex !== null && activeIndex !== i) {
+              if (activeIndex !== null && activeIndex !== i && openTexts[activeIndex]) {
                 const updated = [...openTexts];
                 updated[activeIndex] = {
                   ...updated[activeIndex],

@@ -26,23 +26,53 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
 
     // Save (overwrite current file)
     const save = () => {
-    // If it's still a default "Untitled X", force Save As
-    if (/^Untitled \d+$/.test(fileName)) {
-        saveAs();
-        return;
-    }
-    localStorage.setItem(fileName, JSON.stringify(text));
-    alert("הקובץ נשמר!");
-};
+        // בדיקה שיש טאב פעיל
+        if (activeIndex === null || activeIndex === undefined || !openTexts[activeIndex]) {
+            alert("אין טאב פעיל לשמירה");
+            return;
+        }
+        
+        const currentTabName = openTexts[activeIndex].name;
+        
+        // If it's still a default "Untitled X", force Save As
+        if (/^Untitled \d+$/.test(currentTabName)) {
+            saveAs();
+            return;
+        }
+        
+        localStorage.setItem(currentTabName, JSON.stringify(text));
+        alert("הקובץ נשמר!");
+    };
 
     // Save as (new name)
     const saveAs = () => {
-        const newName = prompt("הכניסי שם חדש לקובץ:");
-        if (newName) {
+        // בדיקה שיש טאב פעיל
+        if (activeIndex === null || activeIndex === undefined || !openTexts[activeIndex]) {
+            alert("אין טאב פעיל לשמירה");
+            return;
+        }
+        
+        const oldName = openTexts[activeIndex].name;
+        const newName = prompt("הכניסי שם חדש לקובץ:")?.trim();
+        
+        if (newName && newName !== oldName) {
+            // בדיקה אם השם כבר קיים
+            if (localStorage.getItem(newName)) {
+                const overwrite = confirm(`קובץ בשם "${newName}" כבר קיים. האם לדרוס אותו?`);
+                if (!overwrite) return;
+            }
+            
+            // מחק את הקובץ הישן אם השם השתנה וזה לא Untitled
+            if (oldName && !oldName.startsWith("Untitled")) {
+                localStorage.removeItem(oldName);
+            }
+            
+            // שמור בשם החדש
             localStorage.setItem(newName, JSON.stringify(text));
             setFileName(newName);
             alert("הקובץ נשמר בשם חדש!");
-            // Update the active tab name
+            
+            // עדכן את שם הטאב
             setOpenTexts((prev) => {
                 const updated = [...prev];
                 updated[activeIndex] = { ...updated[activeIndex], name: newName };
@@ -67,6 +97,24 @@ export default function FileTools({ text, setTextWithHistory, openTexts, setOpen
     const closeFile = (index) => {
         const updated = openTexts.filter((_, i) => i !== index);
         setOpenTexts(updated);
+        
+        // עדכון activeIndex
+        if (updated.length === 0) {
+            setActiveIndex(null);
+            setText([]);
+            setHistory([[]]);
+            setHistoryIndex(0);
+        } else if (index === activeIndex) {
+            // אם סגרנו את הטאב הפעיל, עבור לטאב הקודם או הבא
+            const newActiveIndex = index > 0 ? index - 1 : 0;
+            setActiveIndex(newActiveIndex);
+            setText(updated[newActiveIndex].content);
+            setHistory(updated[newActiveIndex].history || [[]]);
+            setHistoryIndex(updated[newActiveIndex].historyIndex || 0);
+        } else if (index < activeIndex) {
+            // אם סגרנו טאב לפני הפעיל, הקטן את האינדקס
+            setActiveIndex(activeIndex - 1);
+        }
     };
 
     return (
