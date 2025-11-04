@@ -4,9 +4,11 @@ import TextDisplay from "./TextDisplay";
 import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
 import FileTools from "./FileTools";
+import Register from "./Register";
 import "./App.css";
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState("");
   const [text, setText] = useState([]);
   const [openTexts, setOpenTexts] = useState([
     { name: "Untitled 1", content: [], history: [[]], historyIndex: 0 },
@@ -30,8 +32,8 @@ export default function App() {
     setText(newText);
 
     const updated = [...openTexts];
-    updated[activeIndex] = { 
-      ...updated[activeIndex], 
+    updated[activeIndex] = {
+      ...updated[activeIndex],
       content: newText,
       history: newHistory,
       historyIndex: newHistory.length - 1
@@ -54,82 +56,85 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <button
-        className="new-text-btn"
-        onClick={() => {
-          const newTexts = [
-            { name: `Untitled ${openTexts.length + 1}`, content: [], history: [[]], historyIndex: 0 },
-            ...openTexts,
-          ];
-          setOpenTexts(newTexts);
-          setActiveIndex(0);
-          setText([]);
-          setHistory([[]]);
-          setHistoryIndex(0);
-        }}
-      >
-        ➕ New Text
-      </button>
-      <div className="display-section">
-        {openTexts.map((t, i) => (
-          <div
-            key={i}
-            className={`text-container ${i === activeIndex ? "active" : ""}`}
-            onClick={() => {
-              // Save current tab's history before switching
-              if (activeIndex !== null && activeIndex !== i) {
-                const updated = [...openTexts];
-                updated[activeIndex] = {
-                  ...updated[activeIndex],
-                  history: history,
-                  historyIndex: historyIndex
-                };
-                setOpenTexts(updated);
-              }
-              
-              setActiveIndex(i);
-              setText(t.content);
-              setHistory(t.history || [[]]);
-              setHistoryIndex(t.historyIndex || 0);
-            }}
-          >
-            <h3 className="text-title">{t.name}</h3>
-            <TextDisplay text={t.content} language={language} style={style} />
+      {!currentUser ? (
+        <Register setCurrentUser={setCurrentUser} />
+      ) : (<>
+        <button
+          className="new-text-btn"
+          onClick={() => {
+            const newTexts = [
+              { name: `Untitled ${openTexts.length + 1}`, content: [], history: [[]], historyIndex: 0 },
+              ...openTexts,
+            ];
+            setOpenTexts(newTexts);
+            setActiveIndex(0);
+            setText([]);
+            setHistory([[]]);
+            setHistoryIndex(0);
+          }}
+        >
+          ➕ New Text
+        </button>
+        <div className="display-section">
+          {openTexts.map((t, i) => (
+            <div
+              key={i}
+              className={`text-container ${i === activeIndex ? "active" : ""}`}
+              onClick={() => {
+                // Save current tab's history before switching
+                if (activeIndex !== null && activeIndex !== i) {
+                  const updated = [...openTexts];
+                  updated[activeIndex] = {
+                    ...updated[activeIndex],
+                    history: history,
+                    historyIndex: historyIndex
+                  };
+                  setOpenTexts(updated);
+                }
+
+                setActiveIndex(i);
+                setText(t.content);
+                setHistory(t.history || [[]]);
+                setHistoryIndex(t.historyIndex || 0);
+              }}
+            >
+              <h3 className="text-title">{t.name}</h3>
+              <TextDisplay text={t.content} language={language} style={style} />
+            </div>
+          ))}
+        </div>
+        <div className="tools-row">
+          <div className="left-tools">
+            <DesignTools style={style}
+              setStyle={setStyle}
+              text={text}
+              setTextWithHistory={setTextWithHistory} />
+
+            <FileTools text={text} currentUser={currentUser}
+              openTexts={openTexts} setOpenTexts={setOpenTexts}
+              activeIndex={activeIndex} setActiveIndex={setActiveIndex}
+              setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} />
           </div>
-        ))}
-      </div>
-      <div className="tools-row">
-        <div className="left-tools">
-          <DesignTools style={style}
-            setStyle={setStyle}
-            text={text}
-            setTextWithHistory={setTextWithHistory} />
 
-          <FileTools text={text}
-            setTextWithHistory={setTextWithHistory}  openTexts={openTexts} setOpenTexts={setOpenTexts}
-            activeIndex={activeIndex} setActiveIndex={setActiveIndex}
-            setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex}/>
-        </div>
+          <div className="keyboard-center">
+            <Keyboard language={language} onKeyPress={handleKeyPress} />
 
-        <div className="keyboard-center">
-          <Keyboard language={language} onKeyPress={handleKeyPress} />
+          </div>
 
-        </div>
-
-        <div className="right-tools">
-          <EditingTools text={text}
-            setTextWithHistory={setTextWithHistory}
-            history={history}
-            historyIndex={historyIndex}
-            setHistoryIndex={setHistoryIndex}
-            setText={setText}
-            language={language}
-            setLanguage={setLanguage}
-            openTexts={openTexts}
-            setOpenTexts={setOpenTexts}
-            activeIndex={activeIndex} />
-        </div>
-      </div>
+          <div className="right-tools">
+            <EditingTools text={text}
+              setTextWithHistory={setTextWithHistory}
+              history={history}
+              historyIndex={historyIndex}
+              setHistoryIndex={setHistoryIndex}
+              setText={setText}
+              language={language}
+              setLanguage={setLanguage}
+              openTexts={openTexts}
+              setOpenTexts={setOpenTexts}
+              activeIndex={activeIndex} />
+          </div>
+        </div></>)}
     </div>
   );
 }
