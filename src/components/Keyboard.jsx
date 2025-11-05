@@ -25,12 +25,9 @@ export default function Keyboard({ language, onKeyPress, setLanguage }) {
             ["😭", "😱", "😖", "😣", "😞", "😓", "😩", "😫", "😤"],
             ["😠", "🤬", "🤡", "💀", "☠️", "👻", "👽", "🤖", "🎃"]
         ],
-        numbers: [
-            ["1", "2", "3"],
-            ["4", "5", "6"],
-            ["7", "8", "9"],
-            ["0"],
-        ],
+        numbers: 
+            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+        
         symbols: [
             ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"],
             ["-", "_", "=", "+", "[", "]", "{", "}", ";", ":"],
@@ -42,6 +39,18 @@ export default function Keyboard({ language, onKeyPress, setLanguage }) {
 
     return (
         <div className="keyboard">
+            <div className="keyboard-top">
+                <div style={{ marginBottom: "5px" }}>
+                    {keyboards.numbers.map((keyLabel, keyIndex) => (
+                        <Key
+                            key={keyIndex}
+                            label={keyLabel}
+                            onClick={onKeyPress}
+                        />
+                    ))}
+                </div>
+
+            </div>
             <div className="keyboard-scroll">
                 {baseRows.map((row, i) => (
                     <div key={i} style={{ marginBottom: "5px" }}>

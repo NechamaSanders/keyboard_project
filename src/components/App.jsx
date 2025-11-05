@@ -65,6 +65,12 @@ export default function App() {
     }
     setTextWithHistory(newText);
   }
+const closeText = (index) => {
+  const updated = openTexts.filter((_, i) => i !== index);
+  setOpenTexts(updated);
+  if (activeIndex === index) setActiveIndex(updated.length ? 0 : null);
+  else if (activeIndex > index) setActiveIndex(activeIndex - 1);
+};
 
   return (
     <div className="app-container">
@@ -84,7 +90,7 @@ export default function App() {
                     ...updated[activeIndex],
                     history,
                     historyIndex,
-                    language, // ✅ save current language before switching
+                    language,
                   };
                   setOpenTexts(updated);
                 }
@@ -93,10 +99,14 @@ export default function App() {
                 setText(t.content);
                 setHistory(t.history || [[]]);
                 setHistoryIndex(t.historyIndex || 0);
-                setLanguage(t.language || "english"); // ✅ load that tab’s language
+                setLanguage(t.language || "english");
               }}
             >
-              <h3 className="text-title">{t.name}</h3>
+              <h3 className="text-title">{t.name}              
+                <button className="close-tab" onClick={() => closeText(i)}>
+                ×
+              </button></h3>
+
               <TextDisplay text={t.content} language={t.language} style={style} />
 
             </div>

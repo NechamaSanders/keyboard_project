@@ -204,7 +204,6 @@ export default function EditingTools({
                     <option value="english">English</option>
                     <option value="hebrew">Hebrew</option>
                     <option value="emojis">Emojis</option>
-                    <option value="numbers">Numbers</option>
                     <option value="symbols">Symbols</option>
                 </select>
             </div>

@@ -4,10 +4,10 @@ export default function Header({ currentUser, setCurrentUser }) {
   return (
     <div className="header">
       <div className="user-info">
-        שלום, {currentUser}
+        Hello, {currentUser}!
       </div>
       <button className="logout-btn" onClick={() => setCurrentUser("")}>
-        🚪 Logout
+         Logout
       </button>
     </div>
   );
