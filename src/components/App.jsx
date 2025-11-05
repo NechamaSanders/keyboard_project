@@ -34,11 +34,9 @@ export default function App() {
   });
 
   function setTextWithHistory(newText) {
-    // בדיקה שיש טאב פעיל
     if (activeIndex === null || !openTexts[activeIndex]) {
       return;
     }
-
     const newHistory = [...history, newText];
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
@@ -54,7 +52,6 @@ export default function App() {
     setOpenTexts(updated);
   }
 
-
   function handleKeyPress(key) {
     let newText;
     if (key === "Enter") {
@@ -67,28 +64,53 @@ export default function App() {
     setTextWithHistory(newText);
   }
 
-
   return (
     <div className="app-container">
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
         <Header currentUser={currentUser} setCurrentUser={setCurrentUser} setOpenTexts={setOpenTexts} setActiveIndex={setActiveIndex} setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} setLanguage={setLanguage}/>
-        <TabsContainer
-          currentUser={currentUser}
-          text={text}
-          openTexts={openTexts}
-          setOpenTexts={setOpenTexts}
-          activeIndex={activeIndex}
-          setActiveIndex={setActiveIndex}
-          setText={setText}
-          setHistory={setHistory}
-          setHistoryIndex={setHistoryIndex}
-        />
         <div className="display-section">
-          {activeIndex !== null && openTexts[activeIndex] && (
-            <TextDisplay text={openTexts[activeIndex].content} language={openTexts[activeIndex].language} style={style} />
-          )}
+          {openTexts.map((t, i) => (
+            <div
+              key={i}
+              className={`text-container ${i === activeIndex ? "active" : ""}`}
+              onClick={() => {
+                if (activeIndex !== null && activeIndex !== i) {
+                  const updated = [...openTexts];
+                  updated[activeIndex] = {
+                    ...updated[activeIndex],
+                    history,
+                    historyIndex,
+                    language,
+                  };
+                  setOpenTexts(updated);
+                }
+
+                setActiveIndex(i);
+                setText(t.content);
+                setHistory(t.history || [[]]);
+                setHistoryIndex(t.historyIndex || 0);
+                setLanguage(t.language || "english");
+              }}
+            >
+              <h3 className="text-title">{t.name}
+                <TabsContainer
+                  currentUser={currentUser}
+                  text={text}
+                  openTexts={openTexts}
+                  setOpenTexts={setOpenTexts}
+                  activeIndex={activeIndex}
+                  setActiveIndex={setActiveIndex}
+                  setText={setText}
+                  setHistory={setHistory}
+                  setHistoryIndex={setHistoryIndex}
+                  tabIndex={i}
+                />
+              </h3>
+              <TextDisplay text={t.content} language={t.language} style={style} />
+            </div>
+          ))}
         </div>
         <div className="tools-row">
           <div className="left-tools">
@@ -96,18 +118,15 @@ export default function App() {
               setStyle={setStyle}
               text={text}
               setTextWithHistory={setTextWithHistory} />
-
             <FileTools text={text} currentUser={currentUser}
               openTexts={openTexts} setOpenTexts={setOpenTexts}
               activeIndex={activeIndex} setActiveIndex={setActiveIndex}
               setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} />
           </div>
-
           <div className="keyboard-center">
             <Keyboard language={language} onKeyPress={handleKeyPress} />
 
           </div>
-
           <div className="right-tools">
             <EditingTools text={text}
               setTextWithHistory={setTextWithHistory}
