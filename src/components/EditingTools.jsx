@@ -2,18 +2,18 @@ import React from 'react'
 import { useState } from "react";
 //import "./EditingTools.css";
 
-export default function EditingTools({ 
-  text, 
-  setTextWithHistory, 
-  history, 
-  historyIndex, 
-  setHistoryIndex,
-  setText,
-  language, 
-  setLanguage,
-  openTexts,
-  setOpenTexts,
-  activeIndex
+export default function EditingTools({
+    text,
+    setTextWithHistory,
+    history,
+    historyIndex,
+    setHistoryIndex,
+    setText,
+    language,
+    setLanguage,
+    openTexts,
+    setOpenTexts,
+    activeIndex
 }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [changeFrom, setChangeFrom] = useState("");
@@ -45,11 +45,11 @@ export default function EditingTools({
         if (activeIndex === null || !openTexts[activeIndex] || historyIndex <= 0) {
             return;
         }
-        
+
         const newIndex = historyIndex - 1;
         setHistoryIndex(newIndex);
         setText(history[newIndex]);
-        
+
         // Update openTexts as well
         const updated = [...openTexts];
         updated[activeIndex] = {
@@ -65,11 +65,11 @@ export default function EditingTools({
         if (activeIndex === null || !openTexts[activeIndex] || historyIndex >= history.length - 1) {
             return;
         }
-        
+
         const newIndex = historyIndex + 1;
         setHistoryIndex(newIndex);
         setText(history[newIndex]);
-        
+
         // Update openTexts as well
         const updated = [...openTexts];
         updated[activeIndex] = {
@@ -96,7 +96,7 @@ export default function EditingTools({
             matches.push(index);
             index = fullText.indexOf(searchTerm, index + 1);
         }
-        
+
         if (matches.length === 0) {
             alert("לא נמצא 😕");
             return;
@@ -127,7 +127,14 @@ export default function EditingTools({
         });
         setTextWithHistory(newText);
     };
-
+    function changeLanguage(newLang) {
+        setLanguage(newLang);
+        const updated = [...openTexts];
+        if (activeIndex !== null && updated[activeIndex]) {
+            updated[activeIndex] = { ...updated[activeIndex], language: newLang };
+        }
+        setOpenTexts(updated);
+    }
     return (
         <div className="editing-tools">
             <div className="keyboard-row">
@@ -163,20 +170,20 @@ export default function EditingTools({
             </div>
 
             <div className="keyboard-row">
-                <button 
+                <button
                     onClick={undo}
                     disabled={activeIndex === null || !openTexts[activeIndex] || historyIndex <= 0}
-                    style={{ 
+                    style={{
                         opacity: (activeIndex !== null && openTexts[activeIndex] && historyIndex > 0) ? 1 : 0.5,
                         cursor: (activeIndex !== null && openTexts[activeIndex] && historyIndex > 0) ? "pointer" : "not-allowed"
                     }}
                 >
                     Undo
                 </button>
-                <button 
+                <button
                     onClick={redo}
                     disabled={activeIndex === null || !openTexts[activeIndex] || historyIndex >= history.length - 1}
-                    style={{ 
+                    style={{
                         opacity: (activeIndex !== null && openTexts[activeIndex] && historyIndex < history.length - 1) ? 1 : 0.5,
                         cursor: (activeIndex !== null && openTexts[activeIndex] && historyIndex < history.length - 1) ? "pointer" : "not-allowed"
                     }}
@@ -185,7 +192,7 @@ export default function EditingTools({
                 </button>
                 <select
                     value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
+                    onChange={(e) => changeLanguage(e.target.value)}
                     style={{ marginBottom: 10 }}
                 >
                     <option value="english">English</option>

@@ -11,7 +11,13 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState("");
   const [text, setText] = useState([]);
   const [openTexts, setOpenTexts] = useState([
-    { name: "Untitled 1", content: [], history: [[]], historyIndex: 0 },
+    {
+      name: "Untitled 1",
+      content: [],
+      history: [[]],
+      historyIndex: 0,
+      language: "english" // ✅ each text has its own language
+    },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [history, setHistory] = useState([[]]);
@@ -30,7 +36,7 @@ export default function App() {
     if (activeIndex === null || !openTexts[activeIndex]) {
       return;
     }
-    
+
     const newHistory = [...history, newText];
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
@@ -70,13 +76,13 @@ export default function App() {
               key={i}
               className={`text-container ${i === activeIndex ? "active" : ""}`}
               onClick={() => {
-                // Save current tab's history before switching
                 if (activeIndex !== null && activeIndex !== i) {
                   const updated = [...openTexts];
                   updated[activeIndex] = {
                     ...updated[activeIndex],
-                    history: history,
-                    historyIndex: historyIndex
+                    history,
+                    historyIndex,
+                    language, // ✅ save current language before switching
                   };
                   setOpenTexts(updated);
                 }
@@ -85,10 +91,12 @@ export default function App() {
                 setText(t.content);
                 setHistory(t.history || [[]]);
                 setHistoryIndex(t.historyIndex || 0);
+                setLanguage(t.language || "english"); // ✅ load that tab’s language
               }}
             >
               <h3 className="text-title">{t.name}</h3>
-              <TextDisplay text={t.content} language={language} style={style} />
+              <TextDisplay text={t.content} language={t.language} style={style} />
+
             </div>
           ))}
         </div>
