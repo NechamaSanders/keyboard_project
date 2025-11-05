@@ -56,6 +56,10 @@ export default function DesignTools({ style, setStyle, text, setTextWithHistory 
                 <option value="22px">22</option>
                 <option value="24px">24</option>
                 <option value="26px">26</option>
+                <option value="28px">28</option>
+                <option value="36px">36</option>
+                <option value="48px">48</option>
+                <option value="72px">72</option>
             </select>
             <button onClick={toggleBold}><b>B</b></button>
             <button onClick={toggleItalic}><i>I</i></button>
