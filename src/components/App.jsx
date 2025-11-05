@@ -5,6 +5,7 @@ import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
 import FileTools from "./FileTools";
 import Register from "./Register";
+import Header from "./Header";
 import "./App.css";
 
 export default function App() {
@@ -70,6 +71,7 @@ export default function App() {
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
+        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <div className="display-section">
           {openTexts.map((t, i) => (
             <div
@@ -129,7 +131,8 @@ export default function App() {
               setLanguage={setLanguage}
               openTexts={openTexts}
               setOpenTexts={setOpenTexts}
-              activeIndex={activeIndex} />
+              activeIndex={activeIndex}
+              setCurrentUser={setCurrentUser} />
           </div>
         </div></>)}
     </div>

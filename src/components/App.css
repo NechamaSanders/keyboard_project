@@ -67,6 +67,32 @@ body, html, #root {
   font-weight: bold;
   color: #036b7b;
   margin-bottom: 8px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-title .close-tab {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.text-title .close-tab:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
 }
 
 /* === TEXT DISPLAY === */
@@ -254,13 +280,14 @@ body, html, #root {
 
 /* === FILE TOOLS === */
 .fileTools {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background: #d6f7f7;
+  background: #e8fafb;
+  border: 1px solid #a8dfe4;
+  border-radius: 12px;
   padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 60, 60, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 50, 50, 0.1);
+  width: 90%;
+  text-align: center;
+  margin-top: 8px;
 }
 
 .fileTools button {
@@ -378,4 +405,105 @@ body, html, #root {
 
 .register-form button:hover {
   background: #3dbab2;
+}
+
+/* === TOP BUTTONS === */
+.top-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+}
+
+.new-text-btn, .logout-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 60, 60, 0.2);
+  transition: all 0.2s ease;
+}
+
+.new-text-btn {
+  background: #4ecdc4;
+  color: white;
+}
+
+.logout-btn {
+  background: #ff6b6b;
+  color: white;
+}
+
+.new-text-btn:hover {
+  background: #3dbab2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 60, 60, 0.3);
+}
+
+.logout-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 0, 0, 0.3);
+}
+
+.new-text-btn:active, .logout-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 60, 60, 0.2);
+}
+
+/* === HEADER === */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #e8fafb;
+  border-bottom: 1px solid #a8dfe4;
+  margin-bottom: 10px;
+}
+
+.user-info {
+  font-weight: 700;
+  color: #036b7b;
+  font-size: 18px;
+  background: linear-gradient(135deg, #4ecdc4, #036b7b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-info::before {
+  content: "👋";
+  font-size: 20px;
+  animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+.header .logout-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(255, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.header .logout-btn:hover {
+  background: #ff5252;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
 }

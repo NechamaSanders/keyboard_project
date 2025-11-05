@@ -67,23 +67,10 @@ export default function FileTools({
 
   const saveAs = () => {
     if (activeIndex === null) return;
-    const oldName = openTexts[activeIndex].name;
-    const newName = prompt("הכניסי שם חדש לקובץ:")?.trim();
+    const newName = prompt("הכניסי שם חדש לקובץ:");
     if (!newName) return;
 
-    // בדיקה אם השם כבר קיים
-    if (userFiles[newName] && newName !== oldName) {
-      const overwrite = confirm(`קובץ בשם "${newName}" כבר קיים. האם לדרוס אותו?`);
-      if (!overwrite) return;
-    }
-
     const updatedFiles = { ...userFiles, [newName]: text };
-    
-    // מחק את הקובץ הישן אם השם השתנה וזה לא Untitled
-    if (oldName !== newName && !oldName.startsWith("Untitled")) {
-      delete updatedFiles[oldName];
-    }
-    
     saveUserData(updatedFiles);
 
     const updatedOpenTexts = [...openTexts];

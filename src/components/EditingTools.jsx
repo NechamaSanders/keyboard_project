@@ -13,7 +13,8 @@ export default function EditingTools({
     setLanguage,
     openTexts,
     setOpenTexts,
-    activeIndex
+    activeIndex,
+    setCurrentUser
 }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [changeFrom, setChangeFrom] = useState("");
@@ -207,6 +208,8 @@ export default function EditingTools({
                     <option value="symbols">Symbols</option>
                 </select>
             </div>
+
+
         </div>
     );
 }
