@@ -102,8 +102,10 @@ export default function EditingTools({
             return;
         }
 
+        console.log("חיפוש:", searchTerm, "מופעים:", matches);
+
         let currentPosition = 0;
-        const highlighted = text.map(c => {
+        const highlighted = text.map((c, i) => {
             const inMatch = matches.some(start =>
                 currentPosition >= start && currentPosition < start + searchTerm.length
             );
@@ -111,6 +113,9 @@ export default function EditingTools({
                 ...c.style,
                 backgroundColor: inMatch ? "#83c3c3ff" : "transparent"
             };
+            if (inMatch) {
+                console.log(`מדגיש תו ${i}: "${c.text}" במיקום ${currentPosition}`);
+            }
             currentPosition += 1;
             return { ...c, style: newStyle };
         });
