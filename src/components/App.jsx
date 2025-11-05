@@ -64,22 +64,6 @@ export default function App() {
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
-        <button
-          className="new-text-btn"
-          onClick={() => {
-            const newTexts = [
-              { name: `Untitled ${openTexts.length + 1}`, content: [], history: [[]], historyIndex: 0 },
-              ...openTexts,
-            ];
-            setOpenTexts(newTexts);
-            setActiveIndex(0);
-            setText([]);
-            setHistory([[]]);
-            setHistoryIndex(0);
-          }}
-        >
-          ➕ New Text
-        </button>
         <div className="display-section">
           {openTexts.map((t, i) => (
             <div

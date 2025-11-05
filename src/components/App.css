@@ -1,305 +1,341 @@
-/* Reset and Base */
+
+/* === GLOBAL RESET === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f7fa;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#root {
-  height: 100vh;
-  width: 100vw;
-}
-
-/* Main App Container */
-.app-container {
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 10px;
-  padding: 10px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* New Text Button */
-.new-text-btn {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s;
-  justify-self: center;
-}
-
-.new-text-btn:hover {
-  background: #45a049;
-}
-
-/* Display Section */
-.display-section {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  display: flex;
-  gap: 15px;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-}
-
-.text-container {
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 15px;
-  background: #fafafa;
-  cursor: pointer;
-  transition: all 0.3s;
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
-}
-
-.text-container.active {
-  border-color: #2196F3;
-  background: #f0f8ff;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
-}
-
-.text-title {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 8px;
-}
-
-.text-display {
-  min-height: 100px;
-  max-height: 300px;
-  height: auto;
-  overflow-y: auto;
-  padding: 10px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-}
-
-/* Tools Row */
-.tools-row {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 15px;
-  height: 300px;
-}
-
-.left-tools, .right-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.keyboard-center {
+body, html, #root {
+  height: 100%;
+  background: linear-gradient(160deg, #c5f1f3 0%, #6fc5c5 100%);
+  color: #022;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Tool Panels */
-.editing-tools, .fileTools, .design-tools {
-  background: white;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* === APP CONTAINER === */
+.app-container {
+  width: 95%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffffaa;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 40, 40, 0.25);
+  padding: 10px;
+}
+
+/* === TOP SECTION (TEXT DISPLAY AREA) === */
+.display-section {
   flex: 1;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px;
+  transition: all 0.3s ease;
 }
 
-.editing-tools h3, .fileTools h3, .design-tools h3 {
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 16px;
-}
-
-/* Keyboard */
-.keyboard {
-  background: #ffffff;
+.text-container {
+  flex: 1;
+  min-width: 200px;
+  background: #f7ffff;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
-  border: 2px solid #f0f0f0;
+  padding: 10px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-container:hover {
+  transform: translateY(-2px);
+}
+
+.text-container.active {
+  box-shadow: 0 0 12px rgba(48, 155, 155, 0.6);
+  border: 2px solid #4ecdc4;
+  background: #f9ffff;
+}
+
+.text-title {
+  text-align: center;
+  font-weight: bold;
+  color: #036b7b;
+  margin-bottom: 8px;
+}
+
+/* === TEXT DISPLAY === */
+.text-display {
+  flex: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 6px;
+  position: relative;
+}
+
+/* === BLINKING CURSOR === */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: #007c91;
+  animation: blink 1s step-start infinite;
+  vertical-align: text-bottom;
+}
+
+/* Hide cursor for inactive text containers */
+
+.text-container:not(.active) .cursor {
+
+  display: none; /* ✅ only shows cursor in current text */
+
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* === TOOLS ROW === */
+.tools-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 10px;
+  border-top: 2px solid rgba(0, 80, 80, 0.2);
+}
+
+/* === LEFT + RIGHT TOOL PANELS === */
+.left-tools,
+.right-tools {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* === DESIGN + EDITING TOOLS === */
+.editing-tools {
+  background: #e8fafb;
+  border: 1px solid #a8dfe4;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 50, 50, 0.1);
+  width: 90%;
+  text-align: center;
+}
+
+.editing-tools button,
+.editing-tools select,
+.editing-tools input {
+  margin: 4px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: #9be2e8;
+  color: #013;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editing-tools button:hover,
+.editing-tools select:hover {
+  background: #78d1d6;
+}
+
+.editing-tools input[type="color"] {
+  padding: 2px;
+  height: 28px;
+  cursor: pointer;
+}
+
+/* === KEYBOARD CENTER === */
+.keyboard-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.keyboard {
+  background: #baf1f5;
+  border-radius: 16px;
+  padding: 12px;
+  width: 90%;
+  box-shadow: inset 0 0 8px rgba(0, 60, 60, 0.2), 0 4px 12px rgba(0, 60, 60, 0.3);
 }
 
 .keyboard-scroll {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-  margin-bottom: 15px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 6px;
 }
 
 .keyboard-bottom {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  margin-top: 8px;
 }
 
-/* Keys */
+/* === KEY BUTTONS === */
 .key {
-  background: #ffffff;
-  border: 2px solid #e8e8e8;
+  background: #6fc5c5;
+  border: none;
+  margin: 3px;
+  padding: 8px 12px;
   border-radius: 8px;
-  padding: 12px 16px;
+  color: #fff;
   font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  min-width: 45px;
-  text-align: center;
-  color: #333;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 60, 60, 0.3);
+  transition: all 0.15s ease;
 }
 
 .key:hover {
-  background: #f8f9fa;
-  border-color: #d0d0d0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #4eb1b1;
+  transform: translateY(-1px);
 }
 
 .key:active {
-  background: #f0f0f0;
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: #3b9a9a;
+  transform: translateY(1px);
 }
 
-/* Buttons */
-button {
-  background: #2196F3;
+/* === FILE TOOLS === */
+.fileTools {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #d6f7f7;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 60, 60, 0.2);
+}
+
+.fileTools button {
+  background: #63b8c1;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin: 4px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s;
+  transition: all 0.2s;
 }
 
-button:hover {
-  background: #1976D2;
+.fileTools button:hover {
+  background: #4ca6af;
 }
 
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* Inputs and Selects */
-input, select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  margin: 2px;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: #2196F3;
-}
-
-/* Keyboard Rows */
-.keyboard-row {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-
-.keyboard-row button {
-  flex: 1;
-  min-width: 80px;
-}
-
-.keyboard-row input {
-  flex: 1;
-  min-width: 100px;
-}
-
-/* File Menu */
+/* File dropdown menu */
 .file-menu {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  margin-top: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #e4fafa;
+  border: 1px solid #b5e4e4;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 4px;
 }
 
 .file-list {
-  max-height: 150px;
+  max-height: 100px;
   overflow-y: auto;
-  margin: 5px 0;
+  margin-top: 6px;
 }
 
 .file-list button {
+  display: block;
   width: 100%;
   margin: 2px 0;
+  background: #bdf2f2;
+  color: #023;
   text-align: left;
 }
 
-/* Scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* === TABS === */
+.tabs {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+.tab {
+  background: #a5e1e6;
+  border-radius: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
+.tab.active {
+  background: #4ecdc4;
+  color: white;
+  box-shadow: 0 0 6px rgba(0, 100, 100, 0.4);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+.close-tab {
+  background: transparent;
+  border: none;
+  color: #033;
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .tools-row {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    height: auto;
-  }
-  
-  .display-section {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .text-container {
-    min-width: 250px;
-    max-width: 100%;
-  }
+.close-tab:hover {
+  color: red;
+}
+
+/* === REGISTER PAGE === */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.register-form {
+  background: #ecffff;
+  border: 1px solid #a5e4e4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 14px rgba(0, 60, 60, 0.2);
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+}
+
+.register-form input {
+  margin: 6px 0;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #b4e2e2;
+  font-size: 15px;
+}
+
+.register-form button {
+  margin-top: 8px;
+  padding: 8px;
+  background: #4ecdc4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.register-form button:hover {
+  background: #3dbab2;
 }

@@ -56,17 +56,6 @@ export default function Keyboard({ language, onKeyPress, setLanguage }) {
                 ))}
             </div>
             <div className="keyboard-bottom">
-                {/* <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                    style={{ marginBottom: 10 }}
-                >
-                    <option value="english">English</option>
-                    <option value="hebrew">Hebrew</option>
-                    <option value="emojis">Emojis</option>
-                    <option value="numbers">Numbers</option>
-                    <option value="symbols">Symbols</option>
-                </select> */}
                 <Key label="Space" onClick={onKeyPress} />
                 <Key label="Enter" onClick={onKeyPress} />
             </div>
