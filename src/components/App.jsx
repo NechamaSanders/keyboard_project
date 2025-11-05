@@ -73,7 +73,7 @@ export default function App() {
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
-        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
+        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} setOpenTexts={setOpenTexts} setActiveIndex={setActiveIndex} setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} setLanguage={setLanguage}/>
         <TabsContainer
           currentUser={currentUser}
           text={text}
