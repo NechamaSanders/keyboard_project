@@ -18,7 +18,7 @@ export default function App() {
       content: [],
       history: [[]],
       historyIndex: 0,
-      language: "english" // ✅ each text has its own language
+      language: "english"
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -69,7 +69,7 @@ export default function App() {
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
-        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} setOpenTexts={setOpenTexts} setActiveIndex={setActiveIndex} setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} setLanguage={setLanguage}/>
+        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} setOpenTexts={setOpenTexts} setActiveIndex={setActiveIndex} setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} setLanguage={setLanguage} />
         <div className="display-section">
           {openTexts.map((t, i) => (
             <div

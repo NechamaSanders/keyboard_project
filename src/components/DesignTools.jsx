@@ -6,7 +6,7 @@ export default function DesignTools({ style, setStyle, text, setTextWithHistory 
     function changeFont(fontFamily) {
         setStyle((prev) => ({ ...prev, fontFamily }));
     }
-    
+
     function changeSize(fontSize) {
         setStyle((prev) => ({ ...prev, fontSize }));
     }
@@ -24,11 +24,11 @@ export default function DesignTools({ style, setStyle, text, setTextWithHistory 
             fontStyle: prev.fontStyle === "italic" ? "normal" : "italic",
         }));
     }
-    
+
     function applyToAll() {
         setTextWithHistory(text.map(c => ({ ...c, style: style })));
     }
-    
+
     return (
         <div className="editing-tools">
             <select onChange={(e) => changeFont(e.target.value)} value={style.fontFamily}>
@@ -38,7 +38,7 @@ export default function DesignTools({ style, setStyle, text, setTextWithHistory 
                 <option value="Tahoma">Tahoma</option>
             </select>
             <button onClick={applyToAll}>Apply to all</button>
-          
+
             <input type="color" value={style.color}
                 onChange={(e) => changeColor(e.target.value)}></input>
             <select

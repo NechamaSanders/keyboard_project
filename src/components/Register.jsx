@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Register({ setCurrentUser }) {
-    const [mode, setMode] = useState("signup"); // "signup" or "login"
+    const [mode, setMode] = useState("signup");
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ export default function Register({ setCurrentUser }) {
         const newUser = {
             email,
             password,
-            savedTexts: {} // where you can store this user’s texts later
+            savedTexts: {}
         };
         localStorage.setItem(`user:${userName}`, JSON.stringify(newUser));
         setCurrentUser(userName);

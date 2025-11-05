@@ -1,7 +1,6 @@
 import React from "react";
 import Key from './Key'
-//import "./Keyboard.css";
-export default function Keyboard({ language, onKeyPress, setLanguage }) {
+export default function Keyboard({ language, onKeyPress }) {
     const keyboards = {
         english: [
             ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -25,9 +24,9 @@ export default function Keyboard({ language, onKeyPress, setLanguage }) {
             ["😭", "😱", "😖", "😣", "😞", "😓", "😩", "😫", "😤"],
             ["😠", "🤬", "🤡", "💀", "☠️", "👻", "👽", "🤖", "🎃"]
         ],
-        numbers: 
+        numbers:
             ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
-        
+
         symbols: [
             ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"],
             ["-", "_", "=", "+", "[", "]", "{", "}", ";", ":"],

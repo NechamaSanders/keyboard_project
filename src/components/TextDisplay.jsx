@@ -1,7 +1,6 @@
-// TextDisplay.jsx
 import React from "react";
 export default function TextDisplay({ text, language, style }) {
-        const direction = (language === "hebrew")
+    const direction = (language === "hebrew")
     return (
         <div className="text-display" style={{
             direction: direction ? "rtl" : "ltr",
