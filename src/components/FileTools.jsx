@@ -256,7 +256,7 @@ export default function FileTools({
 
       {showFiles && (
         <div className="file-popup">
-          {Object.keys(userFiles).length === 0 && <p>אין קבצים לשמירה</p>}
+          {Object.keys(userFiles).length === 0 && <p>אין קבצים שמורים</p>}
           {Object.keys(userFiles).map((key) => (
             <div
               key={key}
