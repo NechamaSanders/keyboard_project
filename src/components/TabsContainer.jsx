@@ -1,4 +1,5 @@
 import React from "react";
+import TextDisplay from "./TextDisplay";
 
 export default function TabsContainer({
   currentUser,
@@ -10,7 +11,9 @@ export default function TabsContainer({
   setText,
   setHistory,
   setHistoryIndex,
-  tabIndex,
+  style,
+  language,
+  setLanguage,
 }) {
   if (!currentUser) return null;
 
@@ -24,42 +27,41 @@ export default function TabsContainer({
     userData.savedTexts = updatedFiles;
     localStorage.setItem(`user:${currentUser}`, JSON.stringify(userData));
   };
+
   const userFiles = getUserData().savedTexts;
-  const saveFile = () => {
-    if (activeIndex === null) return;
-    const currentName = openTexts[activeIndex].name;
+
+  const saveFile = (index) => {
+    if (index === null) return;
+    const currentName = openTexts[index].name;
+    const currentContent = openTexts[index].content;
+    
     if (/^Untitled \d+$/.test(currentName)) {
       const newName = prompt("הכניסי שם לקובץ:");
       if (!newName) return;
-      saveUserData({ ...userFiles, [newName]: text });
+      saveUserData({ ...userFiles, [newName]: currentContent });
 
       const updatedOpenTexts = [...openTexts];
-      updatedOpenTexts[activeIndex] = { ...updatedOpenTexts[activeIndex], name: newName };
+      updatedOpenTexts[index] = { ...updatedOpenTexts[index], name: newName };
       setOpenTexts(updatedOpenTexts);
     } else {
-      saveUserData({ ...userFiles, [currentName]: text });
+      saveUserData({ ...userFiles, [currentName]: currentContent });
     }
   };
 
   const closeTab = (index) => {
     const currentTab = openTexts[index];
     const hasContent = currentTab.content && currentTab.content.length > 0;
+    
     if (hasContent) {
       const shouldSave = window.confirm("יש תוכן בטאב. האם לשמור לפני סגירה?");
       if (shouldSave) {
-        const oldActiveIndex = activeIndex;
-        const oldText = text;
-        setActiveIndex(index);
-        setText(currentTab.content);
-        saveFile();
-        if (oldActiveIndex !== index) {
-          setActiveIndex(oldActiveIndex);
-          setText(oldText);
-        }
+        saveFile(index);
       }
     }
+
     const updated = openTexts.filter((_, i) => i !== index);
     setOpenTexts(updated);
+
     if (activeIndex === index) {
       if (updated.length > 0) {
         setActiveIndex(0);
@@ -77,17 +79,48 @@ export default function TabsContainer({
     }
   };
 
+  const switchTab = (index) => {
+    if (activeIndex !== null && activeIndex !== index) {
+      const updated = [...openTexts];
+      updated[activeIndex] = {
+        ...updated[activeIndex],
+        history: [...(updated[activeIndex].history || [[]])],
+        historyIndex: updated[activeIndex].historyIndex || 0,
+        language,
+      };
+      setOpenTexts(updated);
+    }
 
+    setActiveIndex(index);
+    setText(openTexts[index].content);
+    setHistory(openTexts[index].history || [[]]);
+    setHistoryIndex(openTexts[index].historyIndex || 0);
+    setLanguage(openTexts[index].language || "english");
+  };
 
   return (
-    <button
-      className="close-tab"
-      onClick={(e) => {
-        e.stopPropagation();
-        closeTab(tabIndex);
-      }}
-    >
-      ×
-    </button>
+    <div className="display-section">
+      {openTexts.map((t, i) => (
+        <div
+          key={i}
+          className={`text-container ${i === activeIndex ? "active" : ""}`}
+          onClick={() => switchTab(i)}
+        >
+          <h3 className="text-title">
+            {t.name}
+            <button
+              className="close-tab"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeTab(i);
+              }}
+            >
+              ×
+            </button>
+          </h3>
+          <TextDisplay text={t.content} language={t.language} style={style} />
+        </div>
+      ))}
+    </div>
   );
 }
