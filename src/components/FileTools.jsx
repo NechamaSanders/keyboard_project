@@ -12,22 +12,16 @@ export default function FileTools({
     setHistoryIndex,
 }) {
     const [showFiles, setShowFiles] = useState(false);
-
-    if (!currentUser) return null;
-
     const getUserData = () => {
         const data = JSON.parse(localStorage.getItem(`user:${currentUser}`));
         return data || { savedTexts: {} };
     };
-
     const saveUserData = (updatedFiles) => {
         const userData = getUserData();
         userData.savedTexts = updatedFiles;
         localStorage.setItem(`user:${currentUser}`, JSON.stringify(userData));
     };
-
     const userFiles = getUserData().savedTexts;
-
     const loadFile = (name) => {
         const data = userFiles[name];
         if (data) {
@@ -43,7 +37,6 @@ export default function FileTools({
             setShowFiles(false);
         }
     };
-
     const save = () => {
         if (activeIndex === null) return;
         const currentName = openTexts[activeIndex].name;
@@ -52,25 +45,20 @@ export default function FileTools({
             return;
         }
         saveUserData({ ...userFiles, [currentName]: text });
-        alert("הקובץ נשמר!");
+        alert("File saved!");
     };
-
     const saveAs = () => {
         if (activeIndex === null) return;
-        const newName = prompt("הכניסי שם חדש לקובץ:");
+        const newName = prompt("Enter new file name:");
         if (!newName) return;
         saveUserData({ ...userFiles, [newName]: text });
-
         const updatedOpenTexts = [...openTexts];
         updatedOpenTexts[activeIndex] = { ...updatedOpenTexts[activeIndex], name: newName };
         setOpenTexts(updatedOpenTexts);
-
-        alert("הקובץ נשמר בשם חדש!");
+        alert("File saved with new name!");
     };
-
     const newFile = () => {
-        const untitledCount =
-            openTexts.filter((t) => t.name.startsWith("Untitled")).length + 1;
+        const untitledCount = openTexts.filter((t) => t.name.startsWith("Untitled")).length + 1;
         const newText = { name: `Untitled ${untitledCount}`, content: [], history: [[]], historyIndex: 0 };
         setOpenTexts([newText, ...openTexts]);
         setActiveIndex(0);

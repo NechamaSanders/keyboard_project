@@ -1,7 +1,5 @@
 import React from 'react'
 import { useState } from "react";
-
-
 export default function EditingTools({
     text,
     setTextWithHistory,
@@ -13,8 +11,7 @@ export default function EditingTools({
     setLanguage,
     openTexts,
     setOpenTexts,
-    activeIndex,
-    setCurrentUser
+    activeIndex
 }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [changeFrom, setChangeFrom] = useState("");
@@ -42,16 +39,12 @@ export default function EditingTools({
     };
 
     const undo = () => {
-        // בדיקה שיש טאב פעיל
         if (activeIndex === null || !openTexts[activeIndex] || historyIndex <= 0) {
             return;
         }
-
         const newIndex = historyIndex - 1;
         setHistoryIndex(newIndex);
         setText(history[newIndex]);
-
-        // Update openTexts as well
         const updated = [...openTexts];
         updated[activeIndex] = {
             ...updated[activeIndex],
@@ -62,16 +55,12 @@ export default function EditingTools({
     };
 
     const redo = () => {
-        // בדיקה שיש טאב פעיל
         if (activeIndex === null || !openTexts[activeIndex] || historyIndex >= history.length - 1) {
             return;
         }
-
         const newIndex = historyIndex + 1;
         setHistoryIndex(newIndex);
         setText(history[newIndex]);
-
-        // Update openTexts as well
         const updated = [...openTexts];
         updated[activeIndex] = {
             ...updated[activeIndex],
@@ -103,8 +92,6 @@ export default function EditingTools({
             return;
         }
 
-        console.log("חיפוש:", searchTerm, "מופעים:", matches);
-
         let currentPosition = 0;
         const highlighted = text.map((c, i) => {
             const inMatch = matches.some(start =>
@@ -114,9 +101,6 @@ export default function EditingTools({
                 ...c.style,
                 backgroundColor: inMatch ? "#83c3c3ff" : "transparent"
             };
-            if (inMatch) {
-                console.log(`מדגיש תו ${i}: "${c.text}" במיקום ${currentPosition}`);
-            }
             currentPosition += 1;
             return { ...c, style: newStyle };
         });

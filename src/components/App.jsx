@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Keyboard from "./Keyboard";
-import TextDisplay from "./TextDisplay";
 import EditingTools from './EditingTools'
 import DesignTools from "./DesignTools";
 import FileTools from "./FileTools";
@@ -18,7 +17,7 @@ export default function App() {
       content: [],
       history: [[]],
       historyIndex: 0,
-      language: "english" // ✅ each text has its own language
+      language: "english"
     },
   ]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -34,7 +33,6 @@ export default function App() {
   });
 
   function setTextWithHistory(newText) {
-    // בדיקה שיש טאב פעיל
     if (activeIndex === null || !openTexts[activeIndex]) {
       return;
     }
@@ -53,30 +51,22 @@ export default function App() {
     };
     setOpenTexts(updated);
   }
-
-
-  function handleKeyPress(key) {
-    let newText;
-    if (key === "Enter") {
-      newText = [...text, { text: "\n", style: style }];
-    } else if (key === "Space") {
-      newText = [...text, { text: " ", style: style }];
-    } else {
-      newText = [...text, { text: key, style: style }];
-    }
-    setTextWithHistory(newText);
-  }
-
-
   return (
     <div className="app-container">
       {!currentUser ? (
         <Register setCurrentUser={setCurrentUser} />
       ) : (<>
-        <Header currentUser={currentUser} setCurrentUser={setCurrentUser} setOpenTexts={setOpenTexts} setActiveIndex={setActiveIndex} setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} setLanguage={setLanguage} />
+        <Header
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          setOpenTexts={setOpenTexts}
+          setActiveIndex={setActiveIndex}
+          setText={setText}
+          setHistory={setHistory}
+          setHistoryIndex={setHistoryIndex}
+          setLanguage={setLanguage} />
         <TabsContainer
           currentUser={currentUser}
-          text={text}
           openTexts={openTexts}
           setOpenTexts={setOpenTexts}
           activeIndex={activeIndex}
@@ -90,24 +80,32 @@ export default function App() {
         />
         <div className="tools-row">
           <div className="left-tools">
-            <DesignTools style={style}
+            <DesignTools
+              style={style}
               setStyle={setStyle}
               text={text}
-              setTextWithHistory={setTextWithHistory} />
-
-            <FileTools text={text} currentUser={currentUser}
-              openTexts={openTexts} setOpenTexts={setOpenTexts}
-              activeIndex={activeIndex} setActiveIndex={setActiveIndex}
-              setText={setText} setHistory={setHistory} setHistoryIndex={setHistoryIndex} />
+              setTextWithHistory={setTextWithHistory}
+            />
+            <FileTools
+              text={text}
+              currentUser={currentUser}
+              openTexts={openTexts}
+              setOpenTexts={setOpenTexts}
+              activeIndex={activeIndex}
+              setActiveIndex={setActiveIndex}
+              setText={setText}
+              setHistory={setHistory}
+              setHistoryIndex={setHistoryIndex}
+            />
           </div>
 
           <div className="keyboard-center">
-            <Keyboard language={language} onKeyPress={handleKeyPress} />
-
+            <Keyboard language={language} setTextWithHistory={setTextWithHistory} text={text} style={style} />
           </div>
 
           <div className="right-tools">
-            <EditingTools text={text}
+            <EditingTools
+              text={text}
               setTextWithHistory={setTextWithHistory}
               history={history}
               historyIndex={historyIndex}
@@ -118,7 +116,7 @@ export default function App() {
               openTexts={openTexts}
               setOpenTexts={setOpenTexts}
               activeIndex={activeIndex}
-              setCurrentUser={setCurrentUser} />
+            />
           </div>
         </div></>)}
     </div>

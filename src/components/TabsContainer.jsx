@@ -3,7 +3,6 @@ import TextDisplay from "./TextDisplay";
 
 export default function TabsContainer({
   currentUser,
-  text,
   openTexts,
   setOpenTexts,
   activeIndex,
@@ -34,10 +33,9 @@ export default function TabsContainer({
     if (index === null) return;
     const currentName = openTexts[index].name;
     const currentContent = openTexts[index].content;
-    
+
     if (/^Untitled \d+$/.test(currentName)) {
       const newName = prompt("הכניסי שם לקובץ:");
-      if (!newName) return;
       saveUserData({ ...userFiles, [newName]: currentContent });
 
       const updatedOpenTexts = [...openTexts];
@@ -50,18 +48,17 @@ export default function TabsContainer({
 
   const closeTab = (index) => {
     const currentTab = openTexts[index];
-    const hasContent = currentTab.content && currentTab.content.length > 0;
-    
-    if (hasContent) {
-      const shouldSave = window.confirm("יש תוכן בטאב. האם לשמור לפני סגירה?");
+    const savedVersion = userFiles[openTexts[index].name];
+    const hasUnsavedChanges = currentTab.content.length > 0 &&
+      (!savedVersion || JSON.stringify(currentTab.content) !== JSON.stringify(savedVersion));
+    if (hasUnsavedChanges) {
+      const shouldSave = window.confirm("There are unsaved changes in the text. Would you like to save?");
       if (shouldSave) {
         saveFile(index);
       }
     }
-
     const updated = openTexts.filter((_, i) => i !== index);
     setOpenTexts(updated);
-
     if (activeIndex === index) {
       if (updated.length > 0) {
         setActiveIndex(0);
@@ -90,7 +87,6 @@ export default function TabsContainer({
       };
       setOpenTexts(updated);
     }
-
     setActiveIndex(index);
     setText(openTexts[index].content);
     setHistory(openTexts[index].history || [[]]);

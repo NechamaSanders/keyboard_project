@@ -1,6 +1,7 @@
 import React from "react";
 import Key from './Key'
-export default function Keyboard({ language, onKeyPress }) {
+export default function Keyboard({ language, setTextWithHistory, text, style }) {
+
     const keyboards = {
         english: [
             ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -24,17 +25,17 @@ export default function Keyboard({ language, onKeyPress }) {
             ["😭", "😱", "😖", "😣", "😞", "😓", "😩", "😫", "😤"],
             ["😠", "🤬", "🤡", "💀", "☠️", "👻", "👽", "🤖", "🎃"]
         ],
-        numbers:
-            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
-
         symbols: [
             ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"],
             ["-", "_", "=", "+", "[", "]", "{", "}", ";", ":"],
             ["'", '"', ",", ".", "/", "?", "\\", "|", "<", ">"],
         ],
+        numbers:
+            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+
     };
 
-    const baseRows = keyboards[language];
+    const chosenKeyboard = keyboards[language];
 
     return (
         <div className="keyboard">
@@ -44,28 +45,32 @@ export default function Keyboard({ language, onKeyPress }) {
                         <Key
                             key={keyIndex}
                             label={keyLabel}
-                            onClick={onKeyPress}
+                            setTextWithHistory={setTextWithHistory}
+                            text={text}
+                            style={style}
                         />
                     ))}
                 </div>
 
             </div>
             <div className="keyboard-scroll">
-                {baseRows.map((row, i) => (
+                {chosenKeyboard.map((row, i) => (
                     <div key={i} style={{ marginBottom: "5px" }}>
                         {row.map((keyLabel, keyIndex) => (
                             <Key
                                 key={`${i}-${keyIndex}`}
                                 label={keyLabel}
-                                onClick={onKeyPress}
+                                setTextWithHistory={setTextWithHistory}
+                                text={text}
+                                style={style}
                             />
                         ))}
                     </div>
                 ))}
             </div>
             <div className="keyboard-bottom">
-                <Key label="Space" onClick={onKeyPress} />
-                <Key label="Enter" onClick={onKeyPress} />
+                <Key label="Space" setTextWithHistory={setTextWithHistory} text={text} style={style} />
+                <Key label="Enter" setTextWithHistory={setTextWithHistory} text={text} style={style} />
             </div>
         </div>
     );
